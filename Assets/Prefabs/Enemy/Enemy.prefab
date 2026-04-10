@@ -157,7 +157,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 8c1c64863373cfc45b50cfc902b0fa63, type: 3}
+  m_Sprite: {fileID: 21300000, guid: adf27bb5d75564561b39ced363829f11, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -197,9 +197,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  deadSprite: {fileID: 21300000, guid: 40ba1457a4eab854e8e52cf68d4a7ad8, type: 3}
+  deadSprite: {fileID: 21300000, guid: 15222418409f44fcc9235bdd76bbd8db, type: 3}
   isDead: 0
   isConvertedToBlock: 0
+  blockMaxHealth: 50
 --- !u!114 &3241276497833790759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -212,7 +213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dea9994dc8fce24491b1821f4b0a8f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 1
+  maxHealth: 20
 --- !u!50 &3924055008892620813
 Rigidbody2D:
   serializedVersion: 4
