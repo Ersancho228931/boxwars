@@ -683,7 +683,7 @@ GameObject:
   m_Component:
   - component: {fileID: 289631817}
   m_Layer: 0
-  m_Name: grass (2)
+  m_Name: grass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1573,7 +1573,7 @@ GameObject:
   - component: {fileID: 744175529}
   - component: {fileID: 744175531}
   m_Layer: 0
-  m_Name: wall (1)
+  m_Name: wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1640,8 +1640,8 @@ Transform:
   m_GameObject: {fileID: 744175528}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.9, y: 0.62588, z: 0}
-  m_LocalScale: {x: 1, y: 34.837, z: 1}
+  m_LocalPosition: {x: 9.9, y: 0.2, z: 0}
+  m_LocalScale: {x: 1, y: 12.19295, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1871,7 +1871,7 @@ GameObject:
   - component: {fileID: 791013734}
   - component: {fileID: 791013736}
   m_Layer: 0
-  m_Name: wall (3)
+  m_Name: wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1938,8 +1938,8 @@ Transform:
   m_GameObject: {fileID: 791013733}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0.42039138, y: -6.11, z: 0}
-  m_LocalScale: {x: 1, y: 34.837, z: 1}
+  m_LocalPosition: {x: 0.25, y: -6.11, z: 0}
+  m_LocalScale: {x: 1, y: 20.466738, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -5218,8 +5218,8 @@ Transform:
   m_GameObject: {fileID: 1691415309}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.4, y: 0.62588, z: 0}
-  m_LocalScale: {x: 1, y: 34.837, z: 1}
+  m_LocalPosition: {x: -9.4, y: -0.02, z: 0}
+  m_LocalScale: {x: 1, y: 12.19295, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -5452,7 +5452,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1855518459}
   m_Layer: 0
-  m_Name: grass (1)
+  m_Name: grass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6014,7 +6014,7 @@ GameObject:
   - component: {fileID: 2117022629}
   - component: {fileID: 2117022631}
   m_Layer: 0
-  m_Name: wall (2)
+  m_Name: wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6081,8 +6081,8 @@ Transform:
   m_GameObject: {fileID: 2117022628}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0.079609394, y: 6.07, z: 0}
-  m_LocalScale: {x: 1, y: 34.837, z: 1}
+  m_LocalPosition: {x: 0.34, y: 6.07, z: 0}
+  m_LocalScale: {x: 1, y: 20.466738, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -6453,12 +6453,16 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 2469105019862120792, guid: ef8a997627c465a4e96e856c5ca5f10b, type: 3}
+      propertyPath: pickupKey
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 2469105019862120792, guid: ef8a997627c465a4e96e856c5ca5f10b, type: 3}
       propertyPath: followSpeed
       value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: 2469105019862120792, guid: ef8a997627c465a4e96e856c5ca5f10b, type: 3}
       propertyPath: pickupRange
-      value: 2.45
+      value: 1.82
       objectReference: {fileID: 0}
     - target: {fileID: 2469105019862120792, guid: ef8a997627c465a4e96e856c5ca5f10b, type: 3}
       propertyPath: followDistance
@@ -6474,7 +6478,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2469105019862120792, guid: ef8a997627c465a4e96e856c5ca5f10b, type: 3}
       propertyPath: enemyLayer.m_Bits
-      value: 128
+      value: 640
       objectReference: {fileID: 0}
     - target: {fileID: 2469105019862120792, guid: ef8a997627c465a4e96e856c5ca5f10b, type: 3}
       propertyPath: hands.Array.data[0]

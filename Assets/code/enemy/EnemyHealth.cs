@@ -20,6 +20,9 @@ public class EnemyHealth : MonoBehaviour
 
     private float spawnTime;
 
+    [Header("Block settings")]
+    public int blockMaxHealth = 50; // тип изменён на int, чтобы убрать ошибку преобразования типов
+
     void Start()
     {
         currentHealth = maxHealth;
@@ -99,7 +102,12 @@ public class EnemyHealth : MonoBehaviour
 
         isConvertedToBlock = true;
 
-        if (GetComponent<Block>() == null) gameObject.AddComponent<Block>();
+        // Если блока нет — создаём и инициализируем HP из поля enemy
+        if (GetComponent<Block>() == null)
+        {
+            var b = gameObject.AddComponent<Block>();
+            b.maxHealth = blockMaxHealth;
+        }
 
         int wallLayer = LayerMask.NameToLayer("Wall");
         if (wallLayer >= 0)

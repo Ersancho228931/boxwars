@@ -36,8 +36,9 @@ public class PlayerConvert : MonoBehaviour
 
         GameObject obj = enemy.gameObject;
 
-        // Add block script
-        obj.AddComponent<Block>();
+        // Add block script and initialize its HP from enemy.blockMaxHealth
+        var b = obj.AddComponent<Block>();
+        b.maxHealth = enemy.blockMaxHealth;
 
         // Make it solid wall
         obj.layer = LayerMask.NameToLayer("Wall");

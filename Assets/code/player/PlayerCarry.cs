@@ -197,7 +197,10 @@ public class PlayerCarry : MonoBehaviour
 
         carriedObjects[handIndex] = obj;
 
-        if (block != null) Destroy(block);
+        // НЕ удаляем компонент Block — отключаем его, чтобы не потерять инспекторные/текущие значения HP
+        if (block != null)
+            block.enabled = false;
+
         if (enemy != null) enemy.isConvertedToBlock = false;
 
         var rb = obj.GetComponent<Rigidbody2D>();
