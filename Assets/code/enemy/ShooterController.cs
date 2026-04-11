@@ -1,4 +1,3 @@
-using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -20,6 +19,13 @@ public class ShooterController : MonoBehaviour
     [Header("Converted block settings")]
     public bool shootWhenConverted = true; // стрел€ть, будучи стеной (isConvertedToBlock)
     public float convertedDetectionRange = 8f;
+
+    [Header("Targeting filter (optional)")]
+    public bool onlyTargetNames = false;    // если true Ч использовать targetNameFilters (по имени)
+    public string[] targetNameFilters;      // список имЄн/подстрок целей
+
+    public bool onlyTargetTags = false;     // если true Ч использовать targetTagFilters (по тегу)
+    public string[] targetTagFilters;       // список тегов целей
 
     [Header("Debug")]
     public bool enableDebug = false;
@@ -46,16 +52,11 @@ public class ShooterController : MonoBehaviour
     {
         bool isCarried = IsCarried();
         if (isCarried)
-        {
             HandleCarried();
-        }
         else
-        {
             HandleAI();
-        }
     }
 
-    // публичный флаг Ч удобно дл€ других компонентов (например projectile) узнать состо€ние
     public bool IsCarried()
     {
         if (transform.parent == null) return false;
@@ -76,7 +77,7 @@ public class ShooterController : MonoBehaviour
 
         if (enemyHealth != null && enemyHealth.isDead)
         {
-            if (rb != null) rb.velocity = Vector2.zero;
+            if (rb != null && rb.bodyType != RigidbodyType2D.Static) rb.velocity = Vector2.zero;
             return;
         }
 
@@ -85,11 +86,11 @@ public class ShooterController : MonoBehaviour
 
         if (dist > 1.2f)
         {
-            if (rb != null) rb.velocity = toPlayer.normalized * moveSpeed;
+            if (rb != null && rb.bodyType != RigidbodyType2D.Static) rb.velocity = toPlayer.normalized * moveSpeed;
         }
         else
         {
-            if (rb != null) rb.velocity = Vector2.zero;
+            if (rb != null && rb.bodyType != RigidbodyType2D.Static) rb.velocity = Vector2.zero;
         }
 
         if (toPlayer.sqrMagnitude > 0.0001f)
@@ -101,7 +102,7 @@ public class ShooterController : MonoBehaviour
 
         if (dist <= detectionRange && Time.time > lastShotTime + shootingInterval)
         {
-            if (enableDebug) Debug.Log($"ShooterController.HandleAI: {gameObject.name} shooting at player (dist {dist:F2})");
+            if (enableDebug) Debug.Log($"{gameObject.name} shooting at player (dist {dist:F2})");
             Shoot((toPlayer.sqrMagnitude > 0.0001f) ? toPlayer.normalized : Vector2.up);
             lastShotTime = Time.time;
         }
@@ -128,7 +129,7 @@ public class ShooterController : MonoBehaviour
 
         if (best == null)
         {
-            if (rb != null) rb.velocity = Vector2.zero;
+            if (rb != null && rb.bodyType != RigidbodyType2D.Static) rb.velocity = Vector2.zero;
             return;
         }
 
@@ -144,7 +145,7 @@ public class ShooterController : MonoBehaviour
 
         if (distToTarget <= convertedDetectionRange && Time.time > lastShotTime + shootingInterval)
         {
-            if (enableDebug) Debug.Log($"ShooterController.Converted: {gameObject.name} shooting at enemy {best.name} (dist {distToTarget:F2})");
+            if (enableDebug) Debug.Log($"{gameObject.name} (converted) shooting at enemy {best.name} (dist {distToTarget:F2})");
             Shoot((toTarget.sqrMagnitude > 0.0001f) ? toTarget.normalized : Vector2.up);
             lastShotTime = Time.time;
         }
@@ -168,7 +169,7 @@ public class ShooterController : MonoBehaviour
         {
             if (Time.time > lastShotTime + 0.1f)
             {
-                if (enableDebug) Debug.Log($"ShooterController.Carried: {gameObject.name} player fired carried shooter");
+                if (enableDebug) Debug.Log($"{gameObject.name} player fired carried shooter");
                 Vector2 dir = aimDir.normalized;
                 Shoot(dir);
                 lastShotTime = Time.time;
@@ -178,27 +179,15 @@ public class ShooterController : MonoBehaviour
 
     void Shoot(Vector2 direction)
     {
-        if (projectilePrefab == null)
-        {
-            if (enableDebug) Debug.LogWarning($"ShooterController.Shoot: projectilePrefab is NULL on {gameObject.name} Ч cannot shoot.");
-            return;
-        }
+        if (projectilePrefab == null) return;
 
-        GameObject p = Instantiate(projectilePrefab, (Vector3)direction * 0.3f + transform.position, Quaternion.identity);
-        if (p == null)
-        {
-            if (enableDebug) Debug.LogError($"ShooterController.Shoot: failed to Instantiate projectilePrefab on {gameObject.name}");
-            return;
-        }
+        GameObject p = Instantiate(projectilePrefab, transform.position + (Vector3)(direction * 0.3f), Quaternion.identity);
+        if (p == null) return;
 
         Rigidbody2D prb = p.GetComponent<Rigidbody2D>();
         if (prb != null)
         {
             prb.velocity = direction * projectileSpeed;
-        }
-        else
-        {
-            if (enableDebug) Debug.LogWarning($"ShooterController.Shoot: projectile has no Rigidbody2D (prefab: {projectilePrefab.name})");
         }
 
         var proj = p.GetComponent<Projectile>();
@@ -206,13 +195,29 @@ public class ShooterController : MonoBehaviour
         {
             proj.damage = projectileDamage;
             proj.owner = gameObject;
-            proj.ignoreCarrierPlayer = IsCarried(); // если переноситс€ Ч не ранть носител€
-        }
-        else
-        {
-            if (enableDebug) Debug.LogWarning($"ShooterController.Shoot: projectile prefab has no Projectile component (prefab: {projectilePrefab.name})");
+            proj.ignoreCarrierPlayer = IsCarried();      // если переноситс€ Ч не ранить носител€
+            proj.allowPlayerDamage = !IsCarried();      // если переноситс€ Ч не бьЄм игрока; иначе можно бить игрока
+            proj.allowedTargetNames = (onlyTargetNames ? targetNameFilters : null);
+            proj.allowedTargetTags = (onlyTargetTags ? targetTagFilters : null);
         }
 
-        if (enableDebug) Debug.Log($"ShooterController.Shoot: {gameObject.name} spawned projectile {p.name}");
+        // ≈сли шутер в руках Ч исключаем столкновени€ с игроком и с owner (чтобы снар€д не убивалс€ моментально)
+        if (IsCarried())
+        {
+            var projColls = p.GetComponentsInChildren<Collider2D>();
+            GameObject playerObj = player != null ? player.gameObject : GameObject.FindWithTag("Player");
+            if (playerObj != null)
+            {
+                var playerColls = playerObj.GetComponentsInChildren<Collider2D>();
+                foreach (var pc in projColls)
+                    foreach (var plc in playerColls)
+                        if (pc != null && plc != null) Physics2D.IgnoreCollision(pc, plc, true);
+            }
+
+            var ownerColls = gameObject.GetComponentsInChildren<Collider2D>();
+            foreach (var pc in projColls)
+                foreach (var oc in ownerColls)
+                    if (pc != null && oc != null) Physics2D.IgnoreCollision(pc, oc, true);
+        }
     }
 }

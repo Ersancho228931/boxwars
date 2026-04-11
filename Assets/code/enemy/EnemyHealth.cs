@@ -23,6 +23,10 @@ public class EnemyHealth : MonoBehaviour
     [Header("Block settings")]
     public int blockMaxHealth = 50; // int — согласовано с Block
 
+    [Header("Boss settings (optional)")]
+    public bool isBoss = false;
+    public string bossName = "THEBOSS";
+
     void Start()
     {
         currentHealth = maxHealth;
@@ -32,6 +36,12 @@ public class EnemyHealth : MonoBehaviour
         anim = GetComponent<Animator>();
 
         spawnTime = Time.time;
+
+        // Если помечен как босс — показать баннер в UI
+        if (isBoss && UIManager.Instance != null)
+        {
+            UIManager.Instance.ShowBoss(bossName);
+        }
     }
 
     void Update()
@@ -42,7 +52,6 @@ public class EnemyHealth : MonoBehaviour
             if (Time.time > spawnTime + 5f)
             {
                 Die();
-                // Для обычных юнитов мы не конвертируем в блок сразу — но для Shooter делаем исключение в Die().
             }
         }
     }
@@ -73,7 +82,6 @@ public class EnemyHealth : MonoBehaviour
         if (rb != null)
         {
             rb.velocity = Vector2.zero;
-            // corpse is movable by default (so player can pick it up); keep as Dynamic
             rb.bodyType = RigidbodyType2D.Dynamic;
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
             rb.mass = 50f;
@@ -90,24 +98,36 @@ public class EnemyHealth : MonoBehaviour
         if (anim != null)
             Destroy(anim);
 
-        // Специальное поведение: если это Shooter — сразу конвертируем в блок, чтобы он продолжал стрелять по врагам.
+        // Если это Shooter — сразу конвертируем в блок (у вас уже реализовано)
         var shooter = GetComponent<ShooterController>();
         if (shooter != null)
         {
             ConvertToBlock();
         }
 
-        // Для остальных юнитов ConvertToBlock() вызывается вручную/по желанию, чтобы дать игроку шанс поднять тело.
+        // Если это босс — показать экран победы
+        if (isBoss)
+        {
+            if (UIManager.Instance != null)
+                UIManager.Instance.ShowWin();
+            else
+                Debug.LogWarning("EnemyHealth.Die: boss died but UIManager.Instance == null");
+        }
+        else
+        {
+            // Вызов через BossController остаётся работоспособным, если он есть
+            var boss = GetComponent<BossController>();
+            if (boss != null && UIManager.Instance != null)
+                UIManager.Instance.ShowWin();
+        }
     }
 
-    // Вызывайте этот метод, когда тело должно стать стеной (PlayerConvert или таймер)
     public void ConvertToBlock()
     {
         if (isConvertedToBlock) return;
 
         isConvertedToBlock = true;
 
-        // Если блока нет — создаём и инициализируем HP из поля enemy
         if (GetComponent<Block>() == null)
         {
             var b = gameObject.AddComponent<Block>();

@@ -165,3 +165,10 @@ MonoBehaviour:
   lifeTime: 5
   owner: {fileID: 7057109017575632913, guid: db795f5b8b9b913458631fcfb94793fb, type: 3}
   ignoreCarrierPlayer: 0
+  allowPlayerDamage: 1
+  allowedTargetNames:
+  - bomber(Clone)
+  - Boss(Clone)
+  - Enemy(Clone)
+  - shooter(Clone)
+  enableDebug: 1
