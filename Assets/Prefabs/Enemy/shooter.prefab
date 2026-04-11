@@ -305,7 +305,9 @@ MonoBehaviour:
   onlyTargetNames: 1
   targetNameFilters:
   - bomber(Clone)
-  - BOSS(Clone)
   - Enemy(Clone)
   - shooter(Clone)
+  onlyTargetTags: 0
+  targetTagFilters:
+  - 
   enableDebug: 1

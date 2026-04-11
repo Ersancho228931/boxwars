@@ -168,7 +168,7 @@ MonoBehaviour:
   allowPlayerDamage: 1
   allowedTargetNames:
   - bomber(Clone)
-  - Boss(Clone)
   - Enemy(Clone)
   - shooter(Clone)
+  allowedTargetTags: []
   enableDebug: 1

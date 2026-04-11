@@ -5782,7 +5782,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxEnemiesDay: 4
   maxEnemiesNight: 10
-  maxDeadBodies: 6
+  maxDeadBodies: 10000
   minSpawnTime: 2
   maxSpawnTime: 7
   spawnEntries:

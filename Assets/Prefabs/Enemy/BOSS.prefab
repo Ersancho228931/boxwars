@@ -203,7 +203,7 @@ MonoBehaviour:
   isConvertedToBlock: 0
   blockMaxHealth: 50
   isBoss: 1
-  bossName: THEBOSS
+  bossName: THE BOSS
 --- !u!114 &3241276497833790759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,4 +322,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0997204290e4b0442a4a8e42681aa8ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bossName: THEBOSS
+  bossName: THE BOSS
