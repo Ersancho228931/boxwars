@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 moveInput;
     private Animator anim;
+    private SpriteRenderer sr;
 
     [Header("Audio Settings")]
     public float footstepInterval = 0.4f;
@@ -16,15 +17,21 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        sr = GetComponent<SpriteRenderer>();
     }
 
     void Update()
     {
         moveInput.x = Input.GetAxisRaw("Horizontal");
         moveInput.y = Input.GetAxisRaw("Vertical");
-        moveInput = moveInput.normalized;
 
-        HandleFlip(moveInput);
+        // Only normalize if there is input, to avoid errors
+        if (moveInput.sqrMagnitude > 0)
+        {
+            moveInput = moveInput.normalized;
+        }
+
+        HandleFlip(moveInput.x); // Pass only the X direction
 
         bool isMoving = moveInput.magnitude > 0.1f;
         if (anim != null) anim.SetBool("walk", isMoving);
@@ -43,17 +50,15 @@ public class PlayerMovement : MonoBehaviour
         currentHealth = health;
     }
 
+    // Change your HandleFootsteps to this:
     void HandleFootsteps(bool isMoving)
     {
         if (isMoving)
         {
-            // First step is instant, others follow interval
             if (footstepTimer <= 0)
             {
-                bool isInjured = currentHealth < 20;
-
-                // Plays special loud sound if health < 20
-                AudioManager.Instance.PlayWalk(isInjured, 0.6f);
+                // Always play normal walk now
+                AudioManager.Instance.PlayWalk(false, 0.4f);
                 footstepTimer = footstepInterval;
             }
             footstepTimer -= Time.deltaTime;
@@ -65,12 +70,17 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void HandleFlip(Vector2 dir)
+    void HandleFlip(float horizontalInput)
     {
-        // By using transform.localScale, ALL children (items/weapons) flip too!
-        if (dir.x > 0.1f)
+        // If moving right
+        if (horizontalInput > 0.1f)
+        {
             transform.localScale = new Vector3(1, 1, 1);
-        else if (dir.x < -0.1f)
+        }
+        // If moving left
+        else if (horizontalInput < -0.1f)
+        {
             transform.localScale = new Vector3(-1, 1, 1);
+        }
     }
 }

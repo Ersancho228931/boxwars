@@ -52,13 +52,23 @@ public class PlayerHealth : MonoBehaviour
             StartCoroutine(HideInfoAfterStartup(15f));
         }
     }
+    private bool playedInjuredSound = false;
 
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
+
+        // ONE-TIME INJURED SOUND LOGIC
+        if (currentHealth <= 20 && !playedInjuredSound)
+        {
+            // Play the sound once (Assuming your AudioManager has a specific clip for this)
+            AudioManager.Instance.PlayOneShot(AudioManager.Instance.playerWalkInjured, 1.0f);
+            playedInjuredSound = true;
+        }
+
         UpdateUI();
         UpdateSprite();
-        SyncHealthToMovement(); // Sync when hit
+        SyncHealthToMovement();
 
         if (flashCoroutine != null) StopCoroutine(flashCoroutine);
         flashCoroutine = StartCoroutine(FlashDamage());

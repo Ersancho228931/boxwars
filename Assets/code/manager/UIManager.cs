@@ -26,8 +26,13 @@ public class UIManager : MonoBehaviour
 
     public void ShowWin()
     {
-        int milliseconds = 2000;
-        Thread.Sleep(milliseconds);
+        // Запускаем корутину для задержки без зависания игры
+        StartCoroutine(WinSequence());
+    }
+
+    private System.Collections.IEnumerator WinSequence()
+    {
+        yield return new WaitForSeconds(2f); // Ждем 2 секунды мягко
 
         if (hud != null) hud.SetActive(false);
         if (winScreen != null) winScreen.SetActive(true);

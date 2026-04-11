@@ -66,7 +66,7 @@ public class EnemyFollow : MonoBehaviour
             {
                 health.TakeDamage(damage);
                 lastAttackTime = Time.time;
-            } 
+            }
         }
 
         // 🧱 Wall

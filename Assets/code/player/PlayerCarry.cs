@@ -388,21 +388,14 @@ public class PlayerCarry : MonoBehaviour
     void Drop(int index)
     {
         GameObject obj = carriedObjects[index];
-        if (obj == null)
-        {
-            carriedObjects[index] = null;
-            return;
-        }
+        if (obj == null) return;
 
         Vector2 handPos = hands[index].position;
         Vector2 dir = (handPos - (Vector2)transform.position).normalized;
         if (dir == Vector2.zero) dir = Vector2.up;
-        Vector2 dropPos = handPos + dir * 0.2f;
+        Vector2 dropPos = handPos + dir * 0.4f;
 
-        var playerCol = GetComponent<Collider2D>();
-        if (playerCol != null && playerCol.OverlapPoint(dropPos))
-            dropPos = handPos + dir * 0.8f;
-
+        // 1. Проверка на замену (уже начатая тобой логика)
         int wallLayer = LayerMask.NameToLayer("Wall");
         GameObject swappedIn = null;
 
@@ -411,80 +404,48 @@ public class PlayerCarry : MonoBehaviour
             Collider2D existing = Physics2D.OverlapPoint(dropPos, 1 << wallLayer);
             if (existing != null && existing.gameObject != obj)
             {
-                GameObject existingObj = existing.gameObject;
-
-                var bc = existingObj.GetComponent<Block>();
-                if (bc != null)
-                {
-                    bc.enabled = false;
-                }
-
-                var eh = existingObj.GetComponent<EnemyHealth>();
-                if (eh != null) eh.isConvertedToBlock = false;
-
-                var rbExisting = existingObj.GetComponent<Rigidbody2D>();
-                if (rbExisting != null)
-                {
-                    rbExisting.bodyType = RigidbodyType2D.Dynamic;
-                    rbExisting.simulated = false;
-                    rbExisting.velocity = Vector2.zero;
-                }
-
-                var colExisting = existingObj.GetComponent<Collider2D>();
-                if (colExisting != null) colExisting.enabled = false;
-
-                existingObj.transform.SetParent(hands[index], worldPositionStays: true);
-                existingObj.transform.position = hands[index].position;
-
-                existingObj.layer = carriedLayer;
-                swappedIn = existingObj;
-
-                Debug.Log($"PlayerCarry: поднял существующую стену {existingObj.name} в руку {index} (замена).");
+                swappedIn = existing.gameObject;
+                // Подготавливаем swappedIn для подбора (отключаем физику и т.д.)
+                var rbEx = swappedIn.GetComponent<Rigidbody2D>();
+                if (rbEx != null) { rbEx.simulated = false; rbEx.velocity = Vector2.zero; }
+                swappedIn.GetComponent<Collider2D>().enabled = false;
+                swappedIn.transform.SetParent(hands[index]);
+                swappedIn.transform.localPosition = Vector3.zero;
+                swappedIn.layer = carriedLayer;
             }
         }
 
+        // 2. Выбрасываем текущий объект
         obj.transform.SetParent(null);
         obj.transform.position = dropPos;
+
+        // Возвращаем слой (например, "Enemy" или "Default")
+        obj.layer = LayerMask.NameToLayer("Enemy");
 
         var rb = obj.GetComponent<Rigidbody2D>();
         if (rb != null)
         {
             rb.simulated = true;
-            rb.velocity = Vector2.zero;
-            rb.bodyType = RigidbodyType2D.Static;
+            rb.bodyType = RigidbodyType2D.Dynamic;
         }
 
         var col = obj.GetComponent<Collider2D>();
-        if (col != null)
+        if (col != null) col.enabled = true;
+
+        // Если это блок — активируем его стационарное состояние
+        var block = obj.GetComponent<Block>();
+        var eh = obj.GetComponent<EnemyHealth>();
+        if (block != null || (eh != null && eh.isConvertedToBlock))
         {
-            col.enabled = true;
-            col.isTrigger = false;
+            if (block != null) block.enabled = true;
+            if (rb != null) rb.bodyType = RigidbodyType2D.Static;
+            obj.layer = (wallLayer >= 0) ? wallLayer : 0;
         }
 
-        var existingBlock = obj.GetComponent<Block>();
-        var eh2 = obj.GetComponent<EnemyHealth>();
-        if (existingBlock != null)
-        {
-            existingBlock.enabled = true;
-        }
-        else
-        {
-            var newBlock = obj.AddComponent<Block>();
-            if (eh2 != null)
-                newBlock.maxHealth = eh2.blockMaxHealth;
-        }
-
-        if (wallLayer >= 0) obj.layer = wallLayer;
-        else Debug.LogWarning("PlayerCarry.Drop: layer 'Wall' not found.");
-
-        if (eh2 != null) eh2.isConvertedToBlock = true;
-
-        var ef = obj.GetComponent<EnemyFollow>();
-        if (ef != null) Destroy(ef);
-
+        // 3. Обновляем массив рук
         carriedObjects[index] = swappedIn;
-
-        Debug.Log($"PlayerCarry: сбросил {obj.name} из руки {index} в позицию {dropPos}");
+        if (swappedIn == null) Debug.Log($"Dropped {obj.name}");
+        else Debug.Log($"Swapped {obj.name} with {swappedIn.name}");
     }
 
     void OnDrawGizmosSelected()

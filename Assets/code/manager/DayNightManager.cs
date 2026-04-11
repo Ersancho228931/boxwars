@@ -17,6 +17,8 @@ public class DayNightManager : MonoBehaviour
 
     void Awake()
     {
+        // If an instance already exists and it's not this one, destroy the old reference
+        // or just overwrite it. This ensures "respawn" always uses the NEW manager.
         instance = this;
     }
 

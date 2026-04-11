@@ -697,11 +697,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shooterShoot: {fileID: 8300000, guid: c66be0776accfe04799eabacf3ccd746, type: 3}
   playerWalk: {fileID: 8300000, guid: 50a32302d6e7ed54a9125a2e35b21124, type: 3}
-  playerWalkInjured: {fileID: 0}
+  playerWalkInjured: {fileID: 8300000, guid: c265fb4edbb2f6342a1a9c0718e1add5, type: 3}
   enemyBreak: {fileID: 8300000, guid: 2f9a9c436e57e77459087af3deefc959, type: 3}
   dayNightChange: {fileID: 8300000, guid: 65e7c24b32d2fb246bef77d9822fed06, type: 3}
   bomberExplosion: {fileID: 8300000, guid: 576c7dca086599744a54b97701d6ad91, type: 3}
-  bossSpawn: {fileID: 0}
+  bossSpawn: {fileID: 8300000, guid: 4bc758f17bd083943b88f8dd969f905d, type: 3}
   sfxSource: {fileID: 379432729}
 --- !u!4 &626400244
 Transform:

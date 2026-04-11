@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class ShooterController : MonoBehaviour
@@ -48,7 +48,7 @@ public class ShooterController : MonoBehaviour
         if (p != null) player = p.transform;
 
         if (enableDebug)
-            Debug.Log($"ShooterController.Start on {gameObject.name} � projectilePrefab is {(projectilePrefab != null ? "assigned" : "NULL")}");
+            Debug.Log($"ShooterController.Start on {gameObject.name} — projectilePrefab is {(projectilePrefab != null ? "assigned" : "NULL")}");
     }
 
     void Update()
