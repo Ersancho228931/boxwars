@@ -37,14 +37,12 @@ public class PlayerCarry : MonoBehaviour
 
     void TryPickupOrDrop()
     {
-        // Если есть хотя бы один предмет в руках — первично бросаем/меняем (удобство управления)
         if (HasAnyCarried())
         {
             DropLast();
             return;
         }
 
-        // Иначе — пытаемся подобрать
         Collider2D[] hits;
         if (enemyLayer.value != 0)
             hits = Physics2D.OverlapCircleAll(transform.position, pickupRange, enemyLayer.value);
@@ -59,7 +57,6 @@ public class PlayerCarry : MonoBehaviour
             return;
         }
 
-        // ищем ближайший подходящий объект (труп или стена или допустимый живой Shooter)
         GameObject best = null;
         float bestDist = Mathf.Infinity;
 
@@ -69,26 +66,21 @@ public class PlayerCarry : MonoBehaviour
             var obj = c.gameObject;
             if (obj == null) continue;
 
-            // игнорируем уже переносимые объекты по слою или по списку carriedObjects
             if (obj.layer == carriedLayer) continue;
             if (IsAlreadyCarried(obj)) continue;
 
-            // обязаны иметь Collider2D и Rigidbody2D
             if (obj.GetComponent<Collider2D>() == null || obj.GetComponent<Rigidbody2D>() == null) continue;
 
-            // фильтруем: либо это Block (стена), либо EnemyHealth (труп) или специальный Shooter (может быть живым)
             var block = obj.GetComponent<Block>();
             var enemy = obj.GetComponent<EnemyHealth>();
             var shooter = obj.GetComponent<ShooterController>();
 
-            // нельзя поднимать живого врага, за исключением shooter с разрешением
             if (enemy != null && !enemy.isDead)
             {
                 if (shooter == null || !shooter.canBePickedWhileAlive)
                     continue;
             }
 
-            // считаем кандидатом
             float d = Vector2.Distance(transform.position, obj.transform.position);
             if (d < bestDist)
             {
@@ -103,14 +95,12 @@ public class PlayerCarry : MonoBehaviour
             return;
         }
 
-        // поднимаем найденный объект в соответствующую руку
         var bestBlock = best.GetComponent<Block>();
         var bestEnemy = best.GetComponent<EnemyHealth>();
         var bestShooter = best.GetComponent<ShooterController>();
 
         int handIndex = -1;
 
-        // Если это живой shooter и он позволяет подбор — используем именно его allowedPickupHandIndex
         if (bestEnemy != null && !bestEnemy.isDead && bestShooter != null && bestShooter.canBePickedWhileAlive)
         {
             int desired = bestShooter.allowedPickupHandIndex;
@@ -131,7 +121,6 @@ public class PlayerCarry : MonoBehaviour
             return;
         }
 
-        // Обычный путь для трупов/блоков
         handIndex = GetClosestFreeHand(best.transform.position);
         if (handIndex == -1)
         {
@@ -183,9 +172,21 @@ public class PlayerCarry : MonoBehaviour
         return bestIndex;
     }
 
+    // helper: сохраняем мировой масштаб объекта при смене родителя
+    void SetParentPreserveWorldScale(Transform child, Transform newParent)
+    {
+        Vector3 worldScale = child.lossyScale;
+        child.SetParent(newParent, worldPositionStays: false);
+        Vector3 parentScale = newParent != null ? newParent.lossyScale : Vector3.one;
+        // защитные меры от деления на ноль
+        float px = parentScale.x == 0 ? 1f : parentScale.x;
+        float py = parentScale.y == 0 ? 1f : parentScale.y;
+        float pz = parentScale.z == 0 ? 1f : parentScale.z;
+        child.localScale = new Vector3(worldScale.x / px, worldScale.y / py, worldScale.z / pz);
+    }
+
     void PickupLiveShooter(GameObject obj, int handIndex)
     {
-        // Специальный путь подъёма для живого Shooter — делает объект переносимым и оставляет EnemyHealth.isDead == false
         var shooter = obj.GetComponent<ShooterController>();
         var enemy = obj.GetComponent<EnemyHealth>();
 
@@ -195,19 +196,18 @@ public class PlayerCarry : MonoBehaviour
         if (rb != null)
         {
             rb.velocity = Vector2.zero;
-            rb.simulated = false; // важное условие для ShooterController.IsCarried()
+            rb.simulated = false; // важно для ShooterController.IsCarried()
             rb.bodyType = RigidbodyType2D.Dynamic;
         }
 
         var col = obj.GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
 
-        obj.transform.SetParent(hands[handIndex], worldPositionStays: true);
-        obj.transform.position = hands[handIndex].position;
+        SetParentPreserveWorldScale(obj.transform, hands[handIndex]);
+        obj.transform.localPosition = Vector3.zero;
 
         obj.layer = carriedLayer;
 
-        // Если нужно — отключаем движение/следование
         var ef = obj.GetComponent<EnemyFollow>();
         if (ef != null) ef.enabled = false;
 
@@ -236,8 +236,8 @@ public class PlayerCarry : MonoBehaviour
         var col = obj.GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
 
-        obj.transform.SetParent(hands[handIndex], worldPositionStays: true);
-        obj.transform.position = hands[handIndex].position;
+        SetParentPreserveWorldScale(obj.transform, hands[handIndex]);
+        obj.transform.localPosition = Vector3.zero;
 
         obj.layer = carriedLayer;
 
@@ -249,7 +249,6 @@ public class PlayerCarry : MonoBehaviour
         var enemy = obj.GetComponent<EnemyHealth>();
         var block = obj.GetComponent<Block>();
 
-        // запрет на поднятие живых — дополнительная защита
         if (enemy != null && !enemy.isDead && (obj.GetComponent<ShooterController>() == null || !obj.GetComponent<ShooterController>().canBePickedWhileAlive))
         {
             Debug.LogWarning($"PlayerCarry.PickupBlock: {obj.name} живой — отказ.");
@@ -258,7 +257,6 @@ public class PlayerCarry : MonoBehaviour
 
         carriedObjects[handIndex] = obj;
 
-        // НЕ удаляем компонент Block — отключаем его, чтобы не потерять инспекторные/текущие значения HP
         if (block != null)
             block.enabled = false;
 
@@ -275,8 +273,8 @@ public class PlayerCarry : MonoBehaviour
         var col = obj.GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
 
-        obj.transform.SetParent(hands[handIndex], worldPositionStays: true);
-        obj.transform.position = hands[handIndex].position;
+        SetParentPreserveWorldScale(obj.transform, hands[handIndex]);
+        obj.transform.localPosition = Vector3.zero;
 
         obj.layer = carriedLayer;
 
@@ -285,7 +283,6 @@ public class PlayerCarry : MonoBehaviour
 
     void DropLast()
     {
-        // бросаем последнюю занятыю руку (правее)
         for (int i = hands.Length - 1; i >= 0; i--)
         {
             if (carriedObjects[i] != null)
@@ -325,11 +322,9 @@ public class PlayerCarry : MonoBehaviour
             {
                 GameObject existingObj = existing.gameObject;
 
-                // подготовим существующую стену к поднятию (swap)
                 var bc = existingObj.GetComponent<Block>();
                 if (bc != null)
                 {
-                    // отключаем, чтобы сохранить настройки HP и текущее состояние, а не удалять компонент
                     bc.enabled = false;
                 }
 
@@ -357,7 +352,6 @@ public class PlayerCarry : MonoBehaviour
             }
         }
 
-        // ставим текущий объект как стену
         obj.transform.SetParent(null);
         obj.transform.position = dropPos;
 
@@ -376,7 +370,6 @@ public class PlayerCarry : MonoBehaviour
             col.isTrigger = false;
         }
 
-        // восстановим компонент Block если он был, либо создадим и инициализируем HP из EnemyHealth (если есть)
         var existingBlock = obj.GetComponent<Block>();
         var eh2 = obj.GetComponent<EnemyHealth>();
         if (existingBlock != null)
@@ -398,7 +391,6 @@ public class PlayerCarry : MonoBehaviour
         var ef = obj.GetComponent<EnemyFollow>();
         if (ef != null) Destroy(ef);
 
-        // если swappedIn != null — рука теперь содержит существующую стену, иначе освобождаем руку
         carriedObjects[index] = swappedIn;
 
         Debug.Log($"PlayerCarry: сбросил {obj.name} из руки {index} в позицию {dropPos}");

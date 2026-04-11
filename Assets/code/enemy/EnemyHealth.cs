@@ -21,7 +21,7 @@ public class EnemyHealth : MonoBehaviour
     private float spawnTime;
 
     [Header("Block settings")]
-    public int blockMaxHealth = 50; // тип изменён на int, чтобы убрать ошибку преобразования типов
+    public int blockMaxHealth = 50; // int — согласовано с Block
 
     void Start()
     {
@@ -37,13 +37,12 @@ public class EnemyHealth : MonoBehaviour
     void Update()
     {
         // ☀️ Die in day after 5 sec
-        if (!isDead && DayNightManager.instance.IsDay())
+        if (!isDead && DayNightManager.instance != null && DayNightManager.instance.IsDay())
         {
             if (Time.time > spawnTime + 5f)
             {
                 Die();
-                // НЕ конвертируем в блок сразу — даём шанс игроку поднять тело.
-                // Если нужно автоматически превратить через время, вызывайте ConvertToBlock() отдельно.
+                // Для обычных юнитов мы не конвертируем в блок сразу — но для Shooter делаем исключение в Die().
             }
         }
     }
@@ -91,8 +90,14 @@ public class EnemyHealth : MonoBehaviour
         if (anim != null)
             Destroy(anim);
 
-        // НЕ ставим isConvertedToBlock и НЕ меняем слой здесь.
-        // ConvertToBlock() делает это явно.
+        // Специальное поведение: если это Shooter — сразу конвертируем в блок, чтобы он продолжал стрелять по врагам.
+        var shooter = GetComponent<ShooterController>();
+        if (shooter != null)
+        {
+            ConvertToBlock();
+        }
+
+        // Для остальных юнитов ConvertToBlock() вызывается вручную/по желанию, чтобы дать игроку шанс поднять тело.
     }
 
     // Вызывайте этот метод, когда тело должно стать стеной (PlayerConvert или таймер)

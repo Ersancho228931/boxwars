@@ -9,6 +9,9 @@ public class Projectile : MonoBehaviour
     public float lifeTime = 5f;
     public GameObject owner;
 
+    // Если true — игнорируем попадания по игроку, несущему владельца (кейс: носимый shooter)
+    public bool ignoreCarrierPlayer = false;
+
     void Start()
     {
         Destroy(gameObject, lifeTime);
@@ -18,8 +21,12 @@ public class Projectile : MonoBehaviour
     {
         if (col == null) return;
 
-        // ignore collisions with owner
+        // ignore collisions with owner itself
         if (owner != null && col.gameObject == owner) return;
+
+        // Если владелец переносится игроком и снаряд может повредить игрока — игнорируем попадания по игроку
+        if (ignoreCarrierPlayer && col.gameObject.CompareTag("Player"))
+            return;
 
         var eh = col.GetComponent<EnemyHealth>();
         if (eh != null)
