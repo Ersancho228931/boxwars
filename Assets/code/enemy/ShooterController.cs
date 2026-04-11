@@ -35,6 +35,7 @@ public class ShooterController : MonoBehaviour
     private Rigidbody2D rb;
     private EnemyHealth enemyHealth;
     private float lastShotTime = -999f;
+    private float lastConvertedShotTime = -999f;
     private Camera mainCam;
     private SpriteRenderer sr;
 
@@ -147,12 +148,15 @@ public class ShooterController : MonoBehaviour
             if (rb != null) rb.rotation = Mathf.MoveTowardsAngle(rb.rotation, angle, step);
         }
 
-        if (distToTarget <= convertedDetectionRange && Time.time > lastShotTime + shootingInterval)
+        if (distToTarget <= convertedDetectionRange &&
+     Time.time > lastConvertedShotTime + shootingInterval)   // ← use the same interval
         {
             if (enableDebug) Debug.Log($"{gameObject.name} (converted) shooting at enemy {best.name} (dist {distToTarget:F2})");
             Shoot((toTarget.sqrMagnitude > 0.0001f) ? toTarget.normalized : Vector2.up);
-            lastShotTime = Time.time;
+            lastConvertedShotTime = Time.time;   // ← important
         }
+
+
     }
 
     void HandleCarried()

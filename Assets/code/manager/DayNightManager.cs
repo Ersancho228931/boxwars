@@ -46,7 +46,8 @@ public class DayNightManager : MonoBehaviour
 
     void SwitchPhase()
     {
-        AudioManager.Instance.PlayOneShot(AudioManager.Instance.dayNightChange, 1.5f);
+        if (AudioManager.Instance != null)
+    AudioManager.Instance.PlayOneShot(AudioManager.Instance.dayNightChange, 1.5f);
         isDay = !isDay;
 
         if (isDay)

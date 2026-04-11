@@ -1,4 +1,4 @@
-using System.Threading;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,25 +14,25 @@ public class UIManager : MonoBehaviour
     public GameObject loseScreen;
 
     [Header("Boss banner & health")]
-    public GameObject bossPanel; // show/hide
+    public GameObject bossPanel;
     public TMP_Text bossText;
     public Slider bossHealthBar;
 
     void Awake()
     {
-        if (Instance != null && Instance != this) Destroy(gameObject);
+        // FIXED: just overwrite so the NEW scene always gets a fresh manager
+        // (exactly like you already do in DayNightManager)
         Instance = this;
     }
 
     public void ShowWin()
     {
-        // Запускаем корутину для задержки без зависания игры
         StartCoroutine(WinSequence());
     }
 
     private System.Collections.IEnumerator WinSequence()
     {
-        yield return new WaitForSeconds(2f); // Ждем 2 секунды мягко
+        yield return new WaitForSeconds(2f);
 
         if (hud != null) hud.SetActive(false);
         if (winScreen != null) winScreen.SetActive(true);

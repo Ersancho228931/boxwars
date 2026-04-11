@@ -7,11 +7,11 @@ public class AudioManager : MonoBehaviour
     [Header("SFX Clips")]
     public AudioClip shooterShoot;
     public AudioClip playerWalk;
-    public AudioClip playerWalkInjured; // New: Louder/Different walk
+    public AudioClip playerWalkInjured;
     public AudioClip enemyBreak;
     public AudioClip dayNightChange;
     public AudioClip bomberExplosion;
-    public AudioClip bossSpawn; // New: Boss Spawn sound
+    public AudioClip bossSpawn;
 
     [Header("Audio Sources")]
     public AudioSource sfxSource;
@@ -19,33 +19,36 @@ public class AudioManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
+        // Safe singleton: always use the new instance after scene reload
         Instance = this;
-        DontDestroyOnLoad(gameObject);
 
-        if (sfxSource == null) sfxSource = gameObject.AddComponent<AudioSource>();
-        walkSource = gameObject.AddComponent<AudioSource>();
+        // Setup sources if missing
+        if (sfxSource == null)
+            sfxSource = gameObject.AddComponent<AudioSource>();
+
+        if (walkSource == null)
+            walkSource = gameObject.AddComponent<AudioSource>();
     }
 
     public void PlayOneShot(AudioClip clip, float vol = 1f)
     {
-        if (clip == null) return;
-        sfxSource.PlayOneShot(clip, vol);
+        if (clip == null || sfxSource == null) return;   // ← Prevents the crash
+        sfxSource.PlayOneShot(clip, Mathf.Clamp01(vol));
     }
 
     public void PlayWalk(bool lowHealth, float vol = 0.8f)
     {
-        // If low health, use injured clip and boost volume
         AudioClip clipToPlay = lowHealth ? playerWalkInjured : playerWalk;
-        float finalVol = lowHealth ? vol * 1.5f : vol;
+        if (clipToPlay == null || walkSource == null) return;
 
-        if (clipToPlay == null) return;
+        float finalVol = lowHealth ? vol * 1.5f : vol;
         walkSource.PlayOneShot(clipToPlay, Mathf.Clamp01(finalVol));
     }
 
     public void StopWalk()
     {
-        if (walkSource != null) walkSource.Stop();
+        if (walkSource != null)
+            walkSource.Stop();
     }
 
     public void PlayBossSpawn() => PlayOneShot(bossSpawn, 1f);
