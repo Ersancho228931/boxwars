@@ -92,9 +92,9 @@ public class EnemyFollow : MonoBehaviour
     void HandleFlip(Vector2 dir)
     {
         if (dir.x > 0.1f)
-            sr.flipX = true;   // RIGHT = flipped
+            sr.flipX = true;
 
         else if (dir.x < -0.1f)
-            sr.flipX = false;  // LEFT = normal
+            sr.flipX = false;
     }
 }

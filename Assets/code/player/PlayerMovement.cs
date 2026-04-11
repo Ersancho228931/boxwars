@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -7,8 +6,6 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 moveInput;
     private SpriteRenderer sr;
-
-
 
     void Start()
     {
@@ -33,15 +30,9 @@ public class PlayerMovement : MonoBehaviour
     void HandleFlip(Vector2 dir)
     {
         if (dir.x > 0.1f)
-        {
-            sr.flipX = true;   // RIGHT = flipped
-        }
+            sr.flipX = true;
 
         else if (dir.x < -0.1f)
-        {
-            sr.flipX = false;  // LEFT = normal
-        }
+            sr.flipX = false;
     }
-
- 
-} 
+}

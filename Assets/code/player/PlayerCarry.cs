@@ -5,7 +5,7 @@ public class PlayerCarry : MonoBehaviour
     public Transform[] hands; // 4 hand slots
     public float pickupRange = 2f;
     public LayerMask enemyLayer; // optional: leave empty to auto-detect
-    public KeyCode pickupKey = KeyCode.E;
+    public KeyCode pickupKey = KeyCode.Space;
     public string carriedLayerName = "Carried"; // создайте этот слой в Project Settings или будет использован Ignore Raycast
 
     private GameObject[] carriedObjects;
@@ -59,7 +59,7 @@ public class PlayerCarry : MonoBehaviour
             return;
         }
 
-        // ищем ближайший подходящий объект (труп или стена)
+        // ищем ближайший подходящий объект (труп или стена или допустимый живой Shooter)
         GameObject best = null;
         float bestDist = Mathf.Infinity;
 
@@ -76,14 +76,19 @@ public class PlayerCarry : MonoBehaviour
             // обязаны иметь Collider2D и Rigidbody2D
             if (obj.GetComponent<Collider2D>() == null || obj.GetComponent<Rigidbody2D>() == null) continue;
 
-            // фильтруем: либо это Block (стена), либо EnemyHealth (труп)
+            // фильтруем: либо это Block (стена), либо EnemyHealth (труп) или специальный Shooter (может быть живым)
             var block = obj.GetComponent<Block>();
             var enemy = obj.GetComponent<EnemyHealth>();
+            var shooter = obj.GetComponent<ShooterController>();
 
-            // нельзя поднимать живого врага
-            if (enemy != null && !enemy.isDead) continue;
+            // нельзя поднимать живого врага, за исключением shooter с разрешением
+            if (enemy != null && !enemy.isDead)
+            {
+                if (shooter == null || !shooter.canBePickedWhileAlive)
+                    continue;
+            }
 
-            // если дошли — считаем кандидатом
+            // считаем кандидатом
             float d = Vector2.Distance(transform.position, obj.transform.position);
             if (d < bestDist)
             {
@@ -98,16 +103,39 @@ public class PlayerCarry : MonoBehaviour
             return;
         }
 
-        // поднимаем найденный объект в ближайшую свободную руку
-        int handIndex = GetClosestFreeHand(best.transform.position);
-        if (handIndex == -1)
-        {
-            Debug.Log("PlayerCarry: нет свободных рук.");
-            return;
-        }
-
+        // поднимаем найденный объект в соответствующую руку
         var bestBlock = best.GetComponent<Block>();
         var bestEnemy = best.GetComponent<EnemyHealth>();
+        var bestShooter = best.GetComponent<ShooterController>();
+
+        int handIndex = -1;
+
+        // Если это живой shooter и он позволяет подбор — используем именно его allowedPickupHandIndex
+        if (bestEnemy != null && !bestEnemy.isDead && bestShooter != null && bestShooter.canBePickedWhileAlive)
+        {
+            int desired = bestShooter.allowedPickupHandIndex;
+            if (desired < 0 || desired >= hands.Length)
+            {
+                Debug.LogWarning("PlayerCarry: shooter.allowedPickupHandIndex вне диапазона.");
+                return;
+            }
+            if (carriedObjects[desired] == null)
+                handIndex = desired;
+            else
+            {
+                Debug.Log("PlayerCarry: целевая рука для поднятия shooter занята.");
+                return;
+            }
+        }
+        else
+        {
+            handIndex = GetClosestFreeHand(best.transform.position);
+            if (handIndex == -1)
+            {
+                Debug.Log("PlayerCarry: нет свободных рук.");
+                return;
+            }
+        }
 
         if (bestBlock != null || (bestEnemy != null && bestEnemy.isConvertedToBlock))
             PickupBlock(best, handIndex);
@@ -189,7 +217,7 @@ public class PlayerCarry : MonoBehaviour
         var block = obj.GetComponent<Block>();
 
         // запрет на поднятие живых — дополнительная защита
-        if (enemy != null && !enemy.isDead)
+        if (enemy != null && !enemy.isDead && (obj.GetComponent<ShooterController>() == null || !obj.GetComponent<ShooterController>().canBePickedWhileAlive))
         {
             Debug.LogWarning($"PlayerCarry.PickupBlock: {obj.name} живой — отказ.");
             return;
@@ -266,7 +294,11 @@ public class PlayerCarry : MonoBehaviour
 
                 // подготовим существующую стену к поднятию (swap)
                 var bc = existingObj.GetComponent<Block>();
-                if (bc != null) Destroy(bc);
+                if (bc != null)
+                {
+                    // отключаем, чтобы сохранить настройки HP и текущее состояние, а не удалять компонент
+                    bc.enabled = false;
+                }
 
                 var eh = existingObj.GetComponent<EnemyHealth>();
                 if (eh != null) eh.isConvertedToBlock = false;
@@ -311,16 +343,27 @@ public class PlayerCarry : MonoBehaviour
             col.isTrigger = false;
         }
 
+        // восстановим компонент Block если он был, либо создадим и инициализируем HP из EnemyHealth (если есть)
+        var existingBlock = obj.GetComponent<Block>();
+        var eh2 = obj.GetComponent<EnemyHealth>();
+        if (existingBlock != null)
+        {
+            existingBlock.enabled = true;
+        }
+        else
+        {
+            var newBlock = obj.AddComponent<Block>();
+            if (eh2 != null)
+                newBlock.maxHealth = eh2.blockMaxHealth;
+        }
+
         if (wallLayer >= 0) obj.layer = wallLayer;
         else Debug.LogWarning("PlayerCarry.Drop: layer 'Wall' not found.");
 
-        var eh2 = obj.GetComponent<EnemyHealth>();
         if (eh2 != null) eh2.isConvertedToBlock = true;
 
         var ef = obj.GetComponent<EnemyFollow>();
         if (ef != null) Destroy(ef);
-
-        if (obj.GetComponent<Block>() == null) obj.AddComponent<Block>();
 
         // если swappedIn != null — рука теперь содержит существующую стену, иначе освобождаем руку
         carriedObjects[index] = swappedIn;

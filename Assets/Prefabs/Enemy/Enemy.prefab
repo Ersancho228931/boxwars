@@ -93,6 +93,7 @@ GameObject:
   - component: {fileID: 3924055008892620813}
   - component: {fileID: 5441580843120826954}
   - component: {fileID: 7307089430461814546}
+  - component: {fileID: 8404222249621797841}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Untagged
@@ -181,7 +182,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: Player
-  speed: 6
+  speed: 3
   damage: 10
   attackCooldown: 1
 --- !u!114 &8892513722615508895
@@ -213,7 +214,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dea9994dc8fce24491b1821f4b0a8f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 20
+  maxHealth: 60
 --- !u!50 &3924055008892620813
 Rigidbody2D:
   serializedVersion: 4
@@ -307,3 +308,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8404222249621797841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7057109017575632913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2f80762eb830fc4484c8fa153f0e192, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  gridSize: 1
+  moveSpeed: 3
