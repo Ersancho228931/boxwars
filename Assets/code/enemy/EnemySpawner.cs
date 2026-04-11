@@ -1,4 +1,4 @@
-﻿
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,8 +9,17 @@ public class EnemySpawner : MonoBehaviour
     {
         public string typeName;
         public GameObject prefab;
-        public int spawnDay = 1;
-        public int spawnCount = 1;
+
+        [Header("Day range")]
+        public bool spawnEveryDay = false;      // если true — спавн будет каждый день
+        public int spawnDayMin = 1;            // минимальный день (включительно)
+        public int spawnDayMax = 1;            // максимальный день (включительно)
+
+        [Header("Counts")]
+        public int spawnCountDay = 1;          // сколько спавнить при старте ДНЯ
+        public int spawnCountNight = 0;        // сколько спавнить при старте НОЧИ (0 = не спавним ночью)
+
+        [Header("Timing per entry")]
         public float spawnIntervalMin = 0.5f;
         public float spawnIntervalMax = 1.5f;
     }
@@ -31,6 +40,7 @@ public class EnemySpawner : MonoBehaviour
     private List<GameObject> deadBodies = new List<GameObject>();
 
     private int lastDay = -1;
+    private bool lastIsDay = false;
 
     void Start()
     {
@@ -38,34 +48,45 @@ public class EnemySpawner : MonoBehaviour
         if (DayNightManager.instance != null)
         {
             lastDay = DayNightManager.instance.GetDay();
-            // если уже день — запуск спавна для текущего дня сразу
-            if (DayNightManager.instance.IsDay())
+            lastIsDay = DayNightManager.instance.IsDay();
+            // Если сцена уже в дне/ночи — запустить соответствующие спавны сразу
+            if (lastIsDay)
                 OnDayStart(lastDay);
+            else
+                OnNightStart(lastDay);
         }
     }
 
-    System.Collections.IEnumerator SpawnLoop()
+    IEnumerator SpawnLoop()
     {
-        // continuous background loop to enforce general spawning if entries are none
         while (true)
         {
             yield return new WaitForSeconds(Random.Range(minSpawnTime, maxSpawnTime));
-            int currentMax = (DayNightManager.instance != null && DayNightManager.instance.IsDay()) ? maxEnemiesDay : maxEnemiesNight;
-            if (currentEnemies < currentMax && spawnEntries.Count == 0)
-            {
-                // fallback simple spawn of single prefab if user left old field empty
-                // do nothing here by default
-            }
 
-            // check day change and trigger per-day spawns
+            // общая проверка лимитов — используется внутри конкретных рутин спавна
+            // отслеживаем смену фазы (день/ночь)
             if (DayNightManager.instance != null)
             {
                 int day = DayNightManager.instance.GetDay();
                 bool isDay = DayNightManager.instance.IsDay();
-                if (isDay && day != lastDay)
+
+                if (day != lastDay || isDay != lastIsDay)
                 {
+                    // фаза/день изменились
                     lastDay = day;
-                    OnDayStart(day);
+
+                    if (isDay && !lastIsDay)
+                    {
+                        // переход: ночь -> день
+                        OnDayStart(day);
+                    }
+                    else if (!isDay && lastIsDay)
+                    {
+                        // переход: день -> ночь
+                        OnNightStart(day);
+                    }
+
+                    lastIsDay = isDay;
                 }
             }
         }
@@ -73,34 +94,50 @@ public class EnemySpawner : MonoBehaviour
 
     void OnDayStart(int day)
     {
-        // start spawn routines for entries that match this day
         foreach (var entry in spawnEntries)
         {
-            if (entry != null && entry.spawnDay == day && entry.prefab != null)
+            if (entry == null || entry.prefab == null) continue;
+
+            if (entry.spawnEveryDay || (day >= entry.spawnDayMin && day <= entry.spawnDayMax))
             {
-                StartCoroutine(SpawnEntryRoutine(entry));
+                int count = Mathf.Max(0, entry.spawnCountDay);
+                if (count > 0)
+                    StartCoroutine(SpawnEntryRoutine(entry, count));
             }
         }
     }
 
-    System.Collections.IEnumerator SpawnEntryRoutine(SpawnEntry entry)
+    void OnNightStart(int day)
     {
-        for (int i = 0; i < entry.spawnCount; i++)
+        foreach (var entry in spawnEntries)
         {
-            // wait a bit between spawns, random within entry interval
+            if (entry == null || entry.prefab == null) continue;
+
+            if (entry.spawnEveryDay || (day >= entry.spawnDayMin && day <= entry.spawnDayMax))
+            {
+                int count = Mathf.Max(0, entry.spawnCountNight);
+                if (count > 0)
+                    StartCoroutine(SpawnEntryRoutine(entry, count));
+            }
+        }
+    }
+
+    IEnumerator SpawnEntryRoutine(SpawnEntry entry, int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
             float wait = Random.Range(entry.spawnIntervalMin, entry.spawnIntervalMax);
             yield return new WaitForSeconds(wait);
 
-            // wait until there's room according to current limits
+            // wait until there's room according to current day/night limits
             int tries = 0;
             while (currentEnemies >= ((DayNightManager.instance != null && DayNightManager.instance.IsDay()) ? maxEnemiesDay : maxEnemiesNight))
             {
                 yield return new WaitForSeconds(0.5f);
                 tries++;
-                if (tries > 20) break; // avoid infinite hang
+                if (tries > 40) break; // safety break
             }
 
-            // spawn if still allowed
             if (currentEnemies < ((DayNightManager.instance != null && DayNightManager.instance.IsDay()) ? maxEnemiesDay : maxEnemiesNight))
             {
                 GameObject e = Instantiate(entry.prefab, transform.position, Quaternion.identity);

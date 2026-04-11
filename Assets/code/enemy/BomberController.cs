@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(EnemyHealth))]
@@ -38,7 +36,7 @@ public class BomberController : MonoBehaviour
 
         // бежим к игроку
         Vector2 dir = (player.position - transform.position).normalized;
-        rb.velocity = dir * speed;
+        if (rb != null) rb.velocity = dir * speed;
 
         if (Time.time >= spawnTime + fuseTime)
         {
@@ -72,26 +70,14 @@ public class BomberController : MonoBehaviour
         // смена спрайта на взрывной
         if (explosionSprite != null && sr != null) sr.sprite = explosionSprite;
 
-        // небольшая задержка, затем помечаем как труп / dead sprite
-        Invoke(nameof(FinishExplosion), 0.35f);
+        // показываем взрывной спрайт 0.5 секунды, затем уничтожаем объект
+        Invoke(nameof(DestroySelf), 0.5f);
     }
 
-    void FinishExplosion()
+    void DestroySelf()
     {
-        if (deadSprite != null && sr != null) sr.sprite = deadSprite;
-
-        // останавливаем движение и помечаем как мёртвого
-        if (rb != null)
-        {
-            rb.velocity = Vector2.zero;
-            rb.bodyType = RigidbodyType2D.Static;
-        }
-
-        if (enemyHealth != null)
-        {
-            enemyHealth.isDead = true;
-            if (convertToBlockAfter) enemyHealth.ConvertToBlock();
-        }
+        // при необходимости можно запустить дополнительные эффекты здесь
+        Destroy(gameObject);
     }
 
     void OnDrawGizmosSelected()
