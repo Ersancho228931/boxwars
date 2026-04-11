@@ -260,7 +260,7 @@ MonoBehaviour:
     spawnDayMin: 1
     spawnDayMax: 5
     spawnCountDay: 1
-    spawnCountNight: 2
+    spawnCountNight: 1
     spawnIntervalMin: 5
     spawnIntervalMax: 7
   - typeName: bmb
@@ -269,7 +269,7 @@ MonoBehaviour:
     spawnDayMin: 2
     spawnDayMax: 4
     spawnCountDay: 1
-    spawnCountNight: 1
+    spawnCountNight: 2
     spawnIntervalMin: 5
     spawnIntervalMax: 7
   - typeName: BOSS
@@ -558,6 +558,55 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &381094081
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 381094083}
+  - component: {fileID: 381094082}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &381094082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 381094081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6bb077b4444d014286cb0a40d62eab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  easySceneIndex: 1
+  mediumSceneIndex: 2
+  hardSceneIndex: 3
+  helpPanel: {fileID: 0}
+  difficultyPanel: {fileID: 0}
+--- !u!4 &381094083
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 381094081}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.5402575, y: -0.32874033, z: 0.96996456}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &421701525 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 236527888167741895, guid: 688d43e834fb4e547a311bd6f265cad4, type: 3}
@@ -757,7 +806,7 @@ MonoBehaviour:
     prefab: {fileID: 7057109017575632913, guid: db795f5b8b9b913458631fcfb94793fb, type: 3}
     spawnEveryDay: 0
     spawnDayMin: 1
-    spawnDayMax: 1
+    spawnDayMax: 4
     spawnCountDay: 1
     spawnCountNight: 1
     spawnIntervalMin: 5
@@ -768,7 +817,7 @@ MonoBehaviour:
     spawnDayMin: 1
     spawnDayMax: 4
     spawnCountDay: 1
-    spawnCountNight: 2
+    spawnCountNight: 1
     spawnIntervalMin: 5
     spawnIntervalMax: 7
   - typeName: bmb
@@ -777,7 +826,7 @@ MonoBehaviour:
     spawnDayMin: 2
     spawnDayMax: 4
     spawnCountDay: 1
-    spawnCountNight: 1
+    spawnCountNight: 2
     spawnIntervalMin: 5
     spawnIntervalMax: 7
   - typeName: BOSS
@@ -1564,7 +1613,7 @@ MonoBehaviour:
     spawnDayMin: 1
     spawnDayMax: 5
     spawnCountDay: 1
-    spawnCountNight: 2
+    spawnCountNight: 1
     spawnIntervalMin: 5
     spawnIntervalMax: 7
   - typeName: bmb
@@ -1573,7 +1622,7 @@ MonoBehaviour:
     spawnDayMin: 2
     spawnDayMax: 4
     spawnCountDay: 1
-    spawnCountNight: 1
+    spawnCountNight: 2
     spawnIntervalMin: 5
     spawnIntervalMax: 7
   - typeName: BOSS
@@ -1848,11 +1897,11 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 7460b039019884dc187944312e6a7755, type: 3}
     - target: {fileID: 3013150031486954484, guid: 688d43e834fb4e547a311bd6f265cad4, type: 3}
       propertyPath: infoMessage
-      value: 'WASD walk
+      value: 'WASD - walk
 
-        Space carry / drop
+        Spac - carry / drop
 
-        LeftMouse use enemes
+        LeftMouse - use enemes
         ability'
       objectReference: {fileID: 0}
     - target: {fileID: 3013150031486954484, guid: 688d43e834fb4e547a311bd6f265cad4, type: 3}
@@ -1889,23 +1938,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4812625794360740603, guid: 688d43e834fb4e547a311bd6f265cad4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4812625794360740603, guid: 688d43e834fb4e547a311bd6f265cad4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1326910931}
+      objectReference: {fileID: 381094082}
     - target: {fileID: 4812625794360740603, guid: 688d43e834fb4e547a311bd6f265cad4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4812625794360740603, guid: 688d43e834fb4e547a311bd6f265cad4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Restart
+      value: LoadSceneIndex
       objectReference: {fileID: 0}
     - target: {fileID: 4812625794360740603, guid: 688d43e834fb4e547a311bd6f265cad4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: UIManager, Assembly-CSharp
+      value: MenuController, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4812625794360740603, guid: 688d43e834fb4e547a311bd6f265cad4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -2004,3 +2053,4 @@ SceneRoots:
   - {fileID: 62646507}
   - {fileID: 150566171}
   - {fileID: 626400244}
+  - {fileID: 381094083}
