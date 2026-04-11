@@ -19,16 +19,30 @@ public class Projectile : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (col == null) return;
+        HandleHit(col?.gameObject);
+    }
 
-        // ignore collisions with owner itself
-        if (owner != null && col.gameObject == owner) return;
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        HandleHit(collision?.gameObject);
+    }
 
-        // Если владелец переносится игроком и снаряд может повредить игрока — игнорируем попадания по игроку
-        if (ignoreCarrierPlayer && col.gameObject.CompareTag("Player"))
-            return;
+    void HandleHit(GameObject hit)
+    {
+        if (hit == null) return;
 
-        var eh = col.GetComponent<EnemyHealth>();
+        // ignore collisions with owner or owner's children
+        if (owner != null)
+        {
+            if (hit == owner) return;
+            if (hit.transform.IsChildOf(owner.transform)) return;
+        }
+
+        // Если снаряд помечен игнорировать носителя — не раним игрока
+        if (ignoreCarrierPlayer && hit.CompareTag("Player")) return;
+
+        // Enemy
+        var eh = hit.GetComponent<EnemyHealth>();
         if (eh != null)
         {
             eh.TakeDamage(damage);
@@ -36,7 +50,8 @@ public class Projectile : MonoBehaviour
             return;
         }
 
-        var ph = col.GetComponent<PlayerHealth>();
+        // Player
+        var ph = hit.GetComponent<PlayerHealth>();
         if (ph != null)
         {
             ph.TakeDamage(damage);
@@ -44,7 +59,7 @@ public class Projectile : MonoBehaviour
             return;
         }
 
-        // collide with environment -> destroy
+        // иначе — стук по окружению -> уничтожить
         Destroy(gameObject);
     }
 }
