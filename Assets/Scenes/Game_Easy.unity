@@ -867,7 +867,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae3dfc32dc2cb094daac55c7a6dc15a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dayDuration: 1
+  dayDuration: 15
   nightDuration: 30
   infoText: {fileID: 1979505028}
   nightOverlay: {fileID: 2012445717}

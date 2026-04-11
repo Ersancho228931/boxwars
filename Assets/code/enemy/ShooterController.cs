@@ -36,9 +36,11 @@ public class ShooterController : MonoBehaviour
     private EnemyHealth enemyHealth;
     private float lastShotTime = -999f;
     private Camera mainCam;
+    private SpriteRenderer sr;
 
     void Start()
     {
+        sr = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         enemyHealth = GetComponent<EnemyHealth>();
         mainCam = Camera.main;
@@ -99,6 +101,7 @@ public class ShooterController : MonoBehaviour
             float angle = Mathf.Atan2(toPlayer.y, toPlayer.x) * Mathf.Rad2Deg - 90f;
             float step = rotateSpeed * Time.deltaTime;
             if (rb != null) rb.rotation = Mathf.MoveTowardsAngle(rb.rotation, angle, step);
+            HandleFlip(toPlayer);
         }
 
         if (dist <= detectionRange && Time.time > lastShotTime + shootingInterval)
@@ -223,5 +226,14 @@ public class ShooterController : MonoBehaviour
                 foreach (var oc in ownerColls)
                     if (pc != null && oc != null) Physics2D.IgnoreCollision(pc, oc, true);
         }
+    }
+
+    void HandleFlip(Vector2 dir)
+    {
+        if (dir.x > 0.1f)
+            sr.flipX = true;
+
+        else if (dir.x < -0.1f)
+            sr.flipX = false;
     }
 }
