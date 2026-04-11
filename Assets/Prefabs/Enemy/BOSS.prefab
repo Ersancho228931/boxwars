@@ -89,10 +89,8 @@ GameObject:
   - component: {fileID: 4066622448604178742}
   - component: {fileID: 4419997432891285863}
   - component: {fileID: 8892513722615508895}
-  - component: {fileID: 3241276497833790759}
   - component: {fileID: 3924055008892620813}
   - component: {fileID: 5441580843120826954}
-  - component: {fileID: 7307089430461814546}
   - component: {fileID: 4502123899036123674}
   m_Layer: 7
   m_Name: BOSS
@@ -182,8 +180,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: Player
-  speed: 3
-  damage: 10
+  speed: 6
+  damage: 70
   attackCooldown: 1
 --- !u!114 &8892513722615508895
 MonoBehaviour:
@@ -197,26 +195,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5847a973d97e1804596f8d842758554c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 1000
   deadSprite: {fileID: 21300000, guid: c084a014adcb6454aa9002002a2a9927, type: 3}
   isDead: 0
   isConvertedToBlock: 0
   blockMaxHealth: 50
   isBoss: 1
   bossName: THE BOSS
---- !u!114 &3241276497833790759
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7057109017575632913}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9dea9994dc8fce24491b1821f4b0a8f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 60
+  damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
+  damageFlashDuration: 0.12
 --- !u!50 &3924055008892620813
 Rigidbody2D:
   serializedVersion: 4
@@ -289,27 +276,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!95 &7307089430461814546
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7057109017575632913}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 1533ce1520628bb43b9ffc8a5857d3a0, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &4502123899036123674
 MonoBehaviour:
   m_ObjectHideFlags: 0

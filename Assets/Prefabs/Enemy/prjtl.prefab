@@ -170,5 +170,7 @@ MonoBehaviour:
   - bomber(Clone)
   - Enemy(Clone)
   - shooter(Clone)
-  allowedTargetTags: []
+  - BOSS
+  allowedTargetTags:
+  - boss
   enableDebug: 1
