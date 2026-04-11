@@ -11,13 +11,13 @@ public class EnemySpawner : MonoBehaviour
         public GameObject prefab;
 
         [Header("Day range")]
-        public bool spawnEveryDay = false;      // если true — спавн будет каждый день
-        public int spawnDayMin = 1;            // минимальный день (включительно)
-        public int spawnDayMax = 1;            // максимальный день (включительно)
+        public bool spawnEveryDay = false;
+        public int spawnDayMin = 1;
+        public int spawnDayMax = 1;
 
         [Header("Counts")]
-        public int spawnCountDay = 1;          // сколько спавнить при старте ДНЯ
-        public int spawnCountNight = 0;        // сколько спавнить при старте НОЧИ (0 = не спавним ночью)
+        public int spawnCountDay = 1;
+        public int spawnCountNight = 0;
 
         [Header("Timing per entry")]
         public float spawnIntervalMin = 0.5f;
@@ -49,7 +49,6 @@ public class EnemySpawner : MonoBehaviour
         {
             lastDay = DayNightManager.instance.GetDay();
             lastIsDay = DayNightManager.instance.IsDay();
-            // Если сцена уже в дне/ночи — запустить соответствующие спавны сразу
             if (lastIsDay)
                 OnDayStart(lastDay);
             else
@@ -63,30 +62,27 @@ public class EnemySpawner : MonoBehaviour
         {
             yield return new WaitForSeconds(Random.Range(minSpawnTime, maxSpawnTime));
 
-            // общая проверка лимитов — используется внутри конкретных рутин спавна
-            // отслеживаем смену фазы (день/ночь)
             if (DayNightManager.instance != null)
             {
                 int day = DayNightManager.instance.GetDay();
                 bool isDay = DayNightManager.instance.IsDay();
 
+                // detect phase change (day/night) or new day
                 if (day != lastDay || isDay != lastIsDay)
                 {
-                    // фаза/день изменились
+                    // store the new state after handling
+                    int prevDay = lastDay;
+                    bool prevIsDay = lastIsDay;
+
                     lastDay = day;
-
-                    if (isDay && !lastIsDay)
-                    {
-                        // переход: ночь -> день
-                        OnDayStart(day);
-                    }
-                    else if (!isDay && lastIsDay)
-                    {
-                        // переход: день -> ночь
-                        OnNightStart(day);
-                    }
-
                     lastIsDay = isDay;
+
+                    if (isDay && !prevIsDay)
+                        OnDayStart(day);
+                    else if (!isDay && prevIsDay)
+                        OnNightStart(day);
+                    else if (day != prevDay && isDay)
+                        OnDayStart(day);
                 }
             }
         }
@@ -124,23 +120,29 @@ public class EnemySpawner : MonoBehaviour
 
     IEnumerator SpawnEntryRoutine(SpawnEntry entry, int count)
     {
+        Vector3 prefabScale = entry.prefab != null ? entry.prefab.transform.localScale : Vector3.one;
+
         for (int i = 0; i < count; i++)
         {
             float wait = Random.Range(entry.spawnIntervalMin, entry.spawnIntervalMax);
             yield return new WaitForSeconds(wait);
 
-            // wait until there's room according to current day/night limits
             int tries = 0;
             while (currentEnemies >= ((DayNightManager.instance != null && DayNightManager.instance.IsDay()) ? maxEnemiesDay : maxEnemiesNight))
             {
                 yield return new WaitForSeconds(0.5f);
                 tries++;
-                if (tries > 40) break; // safety break
+                if (tries > 40) break;
             }
 
             if (currentEnemies < ((DayNightManager.instance != null && DayNightManager.instance.IsDay()) ? maxEnemiesDay : maxEnemiesNight))
             {
                 GameObject e = Instantiate(entry.prefab, transform.position, Quaternion.identity);
+                // ensure prefab's intended localScale (fixes spawn-time unexpected scaling)
+                e.transform.localScale = prefabScale;
+                // ensure top-level in hierarchy so parent scale doesn't modify it
+                e.transform.SetParent(null);
+
                 currentEnemies++;
 
                 EnemyHealth eh = e.GetComponent<EnemyHealth>();
@@ -150,7 +152,6 @@ public class EnemySpawner : MonoBehaviour
                     {
                         currentEnemies--;
 
-                        // Track dead bodies
                         deadBodies.Add(e);
 
                         if (deadBodies.Count > maxDeadBodies)
@@ -164,7 +165,6 @@ public class EnemySpawner : MonoBehaviour
                 }
                 else
                 {
-                    // fallback: if no EnemyHealth, still decrement on destroy after lifetime
                     Destroy(e, 60f);
                 }
             }
@@ -174,7 +174,7 @@ public class EnemySpawner : MonoBehaviour
     public void IncreaseDifficulty(int day)
     {
         maxEnemiesDay += 1;
-        maxEnemiesNight += 2; // night scales faster 😈
+        maxEnemiesNight += 2;
         maxDeadBodies += 2;
     }
 }

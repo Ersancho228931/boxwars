@@ -7,11 +7,10 @@ public class Projectile : MonoBehaviour
     public float lifeTime = 5f;
     public GameObject owner;
 
-    // ƒополнительные настройки, задаютс€ ShooterController
-    public bool ignoreCarrierPlayer = false; // не бить игрока-носител€
-    public bool allowPlayerDamage = true;    // можно ли бить игрока вообще
-    public string[] allowedTargetNames;      // если непустой Ч бьЄм “ќЋ№ ќ по цел€м с этими именами (или содержащим)
-    public string[] allowedTargetTags;       // если непустой Ч бьЄм “ќЋ№ ќ по цел€м с этими тегами
+    public bool ignoreCarrierPlayer = false;
+    public bool allowPlayerDamage = true;
+    public string[] allowedTargetNames;
+    public string[] allowedTargetTags;
 
     [Header("Debug")]
     public bool enableDebug = false;
@@ -57,11 +56,9 @@ public class Projectile : MonoBehaviour
         return false;
     }
 
-    // ѕровер€ем, €вл€етс€ ли hit объектом-носителем владельца (owner находитс€ внутри иерархии hit)
     bool HitIsCarrierOfOwner(GameObject hit)
     {
         if (owner == null || hit == null) return false;
-        // если owner Ч ребЄнок hit (owner находитс€ в иерархии hit), то hit Ч носитель/предок
         return owner.transform.IsChildOf(hit.transform);
     }
 
@@ -71,7 +68,6 @@ public class Projectile : MonoBehaviour
 
         if (enableDebug) Debug.Log($"Projectile.HandleHit: {name} hit {hit.name}");
 
-        // »гнорируем пр€мое попадание по владельцу или по дет€м владельца
         if (owner != null)
         {
             if (hit == owner)
@@ -86,7 +82,6 @@ public class Projectile : MonoBehaviour
                 return;
             }
 
-            // если владелец Ч ребЄнок hit (hit Ч носитель), также игнорируем (чтобы не ранить носител€)
             if (HitIsCarrierOfOwner(hit))
             {
                 if (enableDebug) Debug.Log("Projectile: hit is carrier of owner -> ignore");
@@ -94,14 +89,31 @@ public class Projectile : MonoBehaviour
             }
         }
 
-        // Enemy Ч основной случай: ищем компонент в самом объекте или в родител€х
+        // Enemy: search in parents too
         var eh = hit.GetComponent<EnemyHealth>();
         if (eh == null)
             eh = hit.GetComponentInParent<EnemyHealth>();
 
         if (eh != null)
         {
-            // если задан фильтр по тегам Ч провер€ем тег корневого объекта Enemy
+            // if projectile was fired by an enemy (owner has EnemyHealth) and owner is NOT converted/block nor carried shooter => block friendly fire
+            var ownerEh = owner != null ? owner.GetComponent<EnemyHealth>() : null;
+            var ownerShooter = owner != null ? owner.GetComponent<ShooterController>() : null;
+            bool ownerIsEnemy = ownerEh != null;
+
+            bool ownerConvertedOrCarriedShooter = false;
+            if (ownerEh != null && ownerEh.isConvertedToBlock) ownerConvertedOrCarriedShooter = true;
+            if (ownerShooter != null && ownerShooter.IsCarried()) ownerConvertedOrCarriedShooter = true;
+
+            if (ownerIsEnemy && !ownerConvertedOrCarriedShooter)
+            {
+                // enemy fired and not converted/carried => do not damage other enemies
+                if (enableDebug) Debug.Log("Projectile: friendly fire prevented -> destroy projectile");
+                Destroy(gameObject);
+                return;
+            }
+
+            // tag/name filters apply to the root object of the EnemyHealth
             if (allowedTargetTags != null && allowedTargetTags.Length > 0)
             {
                 if (!TagMatchesFilter(eh.gameObject.tag))
@@ -112,7 +124,6 @@ public class Projectile : MonoBehaviour
                 }
             }
 
-            // если задан фильтр по именам Ч провер€ем им€ объекта с EnemyHealth
             if (allowedTargetNames != null && allowedTargetNames.Length > 0)
             {
                 if (!NameMatchesFilter(eh.gameObject.name))
@@ -132,14 +143,12 @@ public class Projectile : MonoBehaviour
         // Player
         if (hit.CompareTag("Player"))
         {
-            // ≈сли снар€д не должен бить игрока Ч игнорируем попадание
             if (!allowPlayerDamage)
             {
                 if (enableDebug) Debug.Log("Projectile: player hit but allowPlayerDamage == false -> ignore");
                 return;
             }
 
-            // ≈сли владелец переноситс€ игроком и флаг ignoreCarrierPlayer установлен Ч игнорируем попадание по носителю
             if (ignoreCarrierPlayer && HitIsCarrierOfOwner(hit))
             {
                 if (enableDebug) Debug.Log("Projectile: hit is carrier of owner and ignoreCarrierPlayer == true -> ignore");
@@ -156,7 +165,6 @@ public class Projectile : MonoBehaviour
             }
         }
 
-        // иначе Ч стук по окружению -> уничтожить
         if (enableDebug) Debug.Log("Projectile: hit environment -> destroy");
         Destroy(gameObject);
     }

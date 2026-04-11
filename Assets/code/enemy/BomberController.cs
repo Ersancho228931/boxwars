@@ -11,6 +11,11 @@ public class BomberController : MonoBehaviour
     public Sprite deadSprite;
     public bool convertToBlockAfter = false; // если true Ч конвертируем в блок после взрыва
 
+    [Header("Sound")]
+    public AudioClip explosionSound;
+    [Range(0f, 1f)]
+    public float explosionVolume = 1f;
+
     private Transform player;
     private Rigidbody2D rb;
     private EnemyHealth enemyHealth;
@@ -36,7 +41,7 @@ public class BomberController : MonoBehaviour
 
         // бежим к игроку
         Vector2 dir = (player.position - transform.position).normalized;
-        if (rb != null) rb.velocity = dir * speed;
+        if (rb != null && rb.bodyType != RigidbodyType2D.Static) rb.velocity = dir * speed;
 
         if (Time.time >= spawnTime + fuseTime)
         {
@@ -48,6 +53,25 @@ public class BomberController : MonoBehaviour
     {
         if (exploded) return;
         exploded = true;
+
+        // воспроизвести звук взрыва через AudioManager или напр€мую, если назначен
+        if (AudioManager.Instance != null)
+        {
+            if (explosionSound != null)
+                AudioManager.Instance.PlayOneShot(explosionSound, explosionVolume);
+            else
+                AudioManager.Instance.PlayOneShot(AudioManager.Instance.enemyBreak, explosionVolume);
+        }
+        else
+        {
+            if (explosionSound != null)
+            {
+                // если AudioManager отсутствует Ч попробовать проиграть локально
+                var temp = gameObject.AddComponent<AudioSource>();
+                temp.PlayOneShot(explosionSound, explosionVolume);
+                Destroy(temp, explosionSound.length + 0.1f);
+            }
+        }
 
         // нанос€щий урон јќ≈
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, explosionRadius);

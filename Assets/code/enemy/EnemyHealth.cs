@@ -21,7 +21,7 @@ public class EnemyHealth : MonoBehaviour
     private float spawnTime;
 
     [Header("Block settings")]
-    public int blockMaxHealth = 50; // int — согласовано с Block
+    public int blockMaxHealth = 50;
 
     [Header("Boss settings (optional)")]
     public bool isBoss = false;
@@ -37,16 +37,16 @@ public class EnemyHealth : MonoBehaviour
 
         spawnTime = Time.time;
 
-        // Если помечен как босс — показать баннер в UI
         if (isBoss && UIManager.Instance != null)
         {
             UIManager.Instance.ShowBoss(bossName);
+            UIManager.Instance.SetBossMaxHealth(currentHealth);
+            UIManager.Instance.UpdateBossHealth(currentHealth);
         }
     }
 
     void Update()
     {
-        // ☀️ Die in day after 5 sec
         if (!isDead && DayNightManager.instance != null && DayNightManager.instance.IsDay())
         {
             if (Time.time > spawnTime + 5f)
@@ -62,6 +62,11 @@ public class EnemyHealth : MonoBehaviour
 
         currentHealth -= damage;
 
+        if (isBoss && UIManager.Instance != null)
+        {
+            UIManager.Instance.UpdateBossHealth(Mathf.Max(0, currentHealth));
+        }
+
         if (currentHealth <= 0)
         {
             Die();
@@ -74,7 +79,7 @@ public class EnemyHealth : MonoBehaviour
 
         isDead = true;
 
-        OnDeath?.Invoke(); // remove from spawner count
+        OnDeath?.Invoke();
 
         if (deadSprite != null && sr != null)
             sr.sprite = deadSprite;
@@ -98,27 +103,18 @@ public class EnemyHealth : MonoBehaviour
         if (anim != null)
             Destroy(anim);
 
-        // Если это Shooter — сразу конвертируем в блок (у вас уже реализовано)
         var shooter = GetComponent<ShooterController>();
         if (shooter != null)
         {
             ConvertToBlock();
         }
 
-        // Если это босс — показать экран победы
         if (isBoss)
         {
             if (UIManager.Instance != null)
                 UIManager.Instance.ShowWin();
             else
                 Debug.LogWarning("EnemyHealth.Die: boss died but UIManager.Instance == null");
-        }
-        else
-        {
-            // Вызов через BossController остаётся работоспособным, если он есть
-            var boss = GetComponent<BossController>();
-            if (boss != null && UIManager.Instance != null)
-                UIManager.Instance.ShowWin();
         }
     }
 
@@ -139,10 +135,6 @@ public class EnemyHealth : MonoBehaviour
         {
             gameObject.layer = wallLayer;
         }
-        else
-        {
-            Debug.LogWarning("EnemyHealth.ConvertToBlock: layer 'Wall' not found. Создайте слой 'Wall' в Tags and Layers.");
-        }
 
         if (rb != null)
         {
@@ -150,4 +142,7 @@ public class EnemyHealth : MonoBehaviour
             rb.velocity = Vector2.zero;
         }
     }
+
+    // helper: expose current for UI/inspector if needed
+    public int GetCurrentHealth() => currentHealth;
 }

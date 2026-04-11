@@ -1,7 +1,6 @@
-    using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using TMPro;
 
 public class UIManager : MonoBehaviour
@@ -9,13 +8,14 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance;
 
     [Header("HUD / Screens")]
-    public GameObject hud;       // основное HUD, которое скрываем при смерти
+    public GameObject hud;
     public GameObject winScreen;
     public GameObject loseScreen;
 
-    [Header("Boss banner")]
-    public GameObject bossPanel; // контейнер (можно пустой), скрывается/показывается
-    public TMP_Text bossText;    // текст для имени босса
+    [Header("Boss banner & health")]
+    public GameObject bossPanel; // show/hide
+    public TMP_Text bossText;
+    public Slider bossHealthBar;
 
     void Awake()
     {
@@ -39,16 +39,6 @@ public class UIManager : MonoBehaviour
         HideBoss();
     }
 
-    public void HideHUD()
-    {
-        if (hud != null) hud.SetActive(false);
-    }
-
-    public void ShowHUD()
-    {
-        if (hud != null) hud.SetActive(true);
-    }
-
     public void ShowBoss(string name)
     {
         if (bossText != null) bossText.text = name;
@@ -60,10 +50,23 @@ public class UIManager : MonoBehaviour
         if (bossPanel != null) bossPanel.SetActive(false);
     }
 
-    // привязать к кнопке Restart в инспекторе
+    public void SetBossMaxHealth(int max)
+    {
+        if (bossHealthBar != null)
+        {
+            bossHealthBar.maxValue = Mathf.Max(1, max);
+            bossHealthBar.value = bossHealthBar.maxValue;
+        }
+    }
+
+    public void UpdateBossHealth(int current)
+    {
+        if (bossHealthBar != null)
+            bossHealthBar.value = Mathf.Clamp(current, 0, (int)bossHealthBar.maxValue);
+    }
+
     public void Restart()
     {
-        // опционально: сбросить Time.scale
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }

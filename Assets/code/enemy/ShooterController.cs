@@ -11,21 +11,22 @@ public class ShooterController : MonoBehaviour
     public GameObject projectilePrefab;
     public float projectileSpeed = 12f;
     public int projectileDamage = 20;
+    [Header("Sound")]
+    public AudioClip shootSound;
 
     [Header("Pickup as weapon")]
     public bool canBePickedWhileAlive = true;
     public int allowedPickupHandIndex = 0;
 
     [Header("Converted block settings")]
-    public bool shootWhenConverted = true; // стрел€ть, будучи стеной (isConvertedToBlock)
+    public bool shootWhenConverted = true;
     public float convertedDetectionRange = 8f;
 
     [Header("Targeting filter (optional)")]
-    public bool onlyTargetNames = false;    // если true Ч использовать targetNameFilters (по имени)
-    public string[] targetNameFilters;      // список имЄн/подстрок целей
-
-    public bool onlyTargetTags = false;     // если true Ч использовать targetTagFilters (по тегу)
-    public string[] targetTagFilters;       // список тегов целей
+    public bool onlyTargetNames = false;
+    public string[] targetNameFilters;
+    public bool onlyTargetTags = false;
+    public string[] targetTagFilters;
 
     [Header("Debug")]
     public bool enableDebug = false;
@@ -41,7 +42,7 @@ public class ShooterController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         enemyHealth = GetComponent<EnemyHealth>();
         mainCam = Camera.main;
-        var p = GameObject.Find("Player");
+        var p = GameObject.FindWithTag("Player");
         if (p != null) player = p.transform;
 
         if (enableDebug)
@@ -195,13 +196,16 @@ public class ShooterController : MonoBehaviour
         {
             proj.damage = projectileDamage;
             proj.owner = gameObject;
-            proj.ignoreCarrierPlayer = IsCarried();      // если переноситс€ Ч не ранить носител€
-            proj.allowPlayerDamage = !IsCarried();      // если переноситс€ Ч не бьЄм игрока; иначе можно бить игрока
+            proj.ignoreCarrierPlayer = IsCarried();
+            proj.allowPlayerDamage = !IsCarried();
             proj.allowedTargetNames = (onlyTargetNames ? targetNameFilters : null);
             proj.allowedTargetTags = (onlyTargetTags ? targetTagFilters : null);
         }
 
-        // ≈сли шутер в руках Ч исключаем столкновени€ с игроком и с owner (чтобы снар€д не убивалс€ моментально)
+        // play sound via AudioManager if configured
+        if (AudioManager.Instance != null && shootSound != null)
+            AudioManager.Instance.PlayOneShot(shootSound);
+
         if (IsCarried())
         {
             var projColls = p.GetComponentsInChildren<Collider2D>();
