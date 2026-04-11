@@ -28,6 +28,12 @@ public class DayNightManager : MonoBehaviour
 
     void Update()
     {
+        // 🌑 Check if it is Night 5. If it is, we stop the timer so it never turns Day.
+        if (!isDay && dayCount >= 5)
+        {
+            return; // Exit Update early, stopping the countdown
+        }
+
         timer -= Time.deltaTime;
 
         if (timer <= 0)
@@ -38,6 +44,7 @@ public class DayNightManager : MonoBehaviour
 
     void SwitchPhase()
     {
+        AudioManager.Instance.PlayOneShot(AudioManager.Instance.dayNightChange, 1.5f);
         isDay = !isDay;
 
         if (isDay)
@@ -45,7 +52,12 @@ public class DayNightManager : MonoBehaviour
             dayCount++;
             timer = dayDuration;
 
-            FindObjectOfType<EnemySpawner>().IncreaseDifficulty(dayCount);
+            // Make sure EnemySpawner exists before calling
+            EnemySpawner spawner = FindObjectOfType<EnemySpawner>();
+            if (spawner != null)
+            {
+                spawner.IncreaseDifficulty(dayCount);
+            }
         }
         else
         {
@@ -58,9 +70,17 @@ public class DayNightManager : MonoBehaviour
     void UpdateUI()
     {
         string phase = isDay ? "DAY" : "NIGHT";
-        infoText.text = "Day: " + dayCount + "\n" + phase;
 
-        // 🌙 Night overlay
+        // Custom text for the final forever night
+        if (!isDay && dayCount >= 5)
+        {
+            infoText.text = "Day: " + dayCount + "\nFOREVER NIGHT";
+        }
+        else
+        {
+            infoText.text = "Day: " + dayCount + "\n" + phase;
+        }
+
         if (nightOverlay != null)
             nightOverlay.SetActive(!isDay);
     }

@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: Player
-  speed: 6
+  speed: 3
   damage: 70
   attackCooldown: 1
 --- !u!114 &8892513722615508895

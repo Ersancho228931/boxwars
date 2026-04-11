@@ -14,7 +14,7 @@ public class BomberController : MonoBehaviour
     [Header("Sound")]
     public AudioClip explosionSound;
     [Range(0f, 1f)]
-    public float explosionVolume = 1f;
+    public float explosionVolume = 2.5f;
 
     private Transform player;
     private Rigidbody2D rb;
@@ -51,6 +51,7 @@ public class BomberController : MonoBehaviour
 
     void Explode()
     {
+        AudioManager.Instance.PlayOneShot(AudioManager.Instance.bomberExplosion);
         if (exploded) return;
         exploded = true;
 

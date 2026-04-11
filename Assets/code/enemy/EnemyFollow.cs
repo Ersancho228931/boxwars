@@ -66,7 +66,7 @@ public class EnemyFollow : MonoBehaviour
             {
                 health.TakeDamage(damage);
                 lastAttackTime = Time.time;
-            }
+            } 
         }
 
         // 🧱 Wall
@@ -78,6 +78,7 @@ public class EnemyFollow : MonoBehaviour
             lastAttackTime = Time.time;
 
             if (anim != null) anim.SetBool("brk", true);
+            AudioManager.Instance.PlayOneShot(AudioManager.Instance.enemyBreak);
         }
     }
 
