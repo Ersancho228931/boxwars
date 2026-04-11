@@ -5700,30 +5700,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6c12c3d21667a04b9158e49f94a31e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxEnemiesDay: 1
-  maxEnemiesNight: 3
+  maxEnemiesDay: 4
+  maxEnemiesNight: 10
   maxDeadBodies: 6
   minSpawnTime: 2
   maxSpawnTime: 7
   spawnEntries:
-  - typeName: 
-    prefab: {fileID: 0}
-    spawnDay: 0
-    spawnCount: 0
-    spawnIntervalMin: 0
-    spawnIntervalMax: 0
-  - typeName: 
-    prefab: {fileID: 0}
-    spawnDay: 0
-    spawnCount: 0
-    spawnIntervalMin: 0
-    spawnIntervalMax: 0
-  - typeName: 
-    prefab: {fileID: 0}
-    spawnDay: 0
-    spawnCount: 0
-    spawnIntervalMin: 0
-    spawnIntervalMax: 0
+  - typeName: ogn
+    prefab: {fileID: 7057109017575632913, guid: db795f5b8b9b913458631fcfb94793fb, type: 3}
+    spawnDay: 1
+    spawnCount: 2
+    spawnIntervalMin: 3
+    spawnIntervalMax: 5
+  - typeName: zub
+    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
+    spawnDay: 1
+    spawnCount: 2
+    spawnIntervalMin: 3
+    spawnIntervalMax: 5
 --- !u!4 &1779884564
 Transform:
   m_ObjectHideFlags: 0

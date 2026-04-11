@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -36,10 +36,15 @@ public class EnemySpawner : MonoBehaviour
     {
         StartCoroutine(SpawnLoop());
         if (DayNightManager.instance != null)
+        {
             lastDay = DayNightManager.instance.GetDay();
+            // если уже день — запуск спавна для текущего дня сразу
+            if (DayNightManager.instance.IsDay())
+                OnDayStart(lastDay);
+        }
     }
 
-    IEnumerator SpawnLoop()
+    System.Collections.IEnumerator SpawnLoop()
     {
         // continuous background loop to enforce general spawning if entries are none
         while (true)
@@ -78,7 +83,7 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    IEnumerator SpawnEntryRoutine(SpawnEntry entry)
+    System.Collections.IEnumerator SpawnEntryRoutine(SpawnEntry entry)
     {
         for (int i = 0; i < entry.spawnCount; i++)
         {

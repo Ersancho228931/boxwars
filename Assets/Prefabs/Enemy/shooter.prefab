@@ -87,14 +87,13 @@ GameObject:
   m_Component:
   - component: {fileID: 1865073530853693939}
   - component: {fileID: 4066622448604178742}
-  - component: {fileID: 4419997432891285863}
   - component: {fileID: 8892513722615508895}
-  - component: {fileID: 3241276497833790759}
   - component: {fileID: 3924055008892620813}
   - component: {fileID: 5441580843120826954}
   - component: {fileID: 7307089430461814546}
+  - component: {fileID: 986893759650318224}
   m_Layer: 7
-  m_Name: Enemy
+  m_Name: shooter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -157,7 +156,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 1fbdf6a23e6f845a49743454a0f77cad, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 447366c8479114b04a2a5fec0fed5d68, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -168,22 +167,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4419997432891285863
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7057109017575632913}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc0d81b64d0899a4585667387b9ecb0a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerName: Player
-  speed: 3
-  damage: 10
-  attackCooldown: 1
 --- !u!114 &8892513722615508895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,23 +180,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  deadSprite: {fileID: 21300000, guid: cec978ed0e02f48dfb15b2af0f022aa7, type: 3}
+  deadSprite: {fileID: 21300000, guid: 9db8d80f27d64462ba094c7cee361f86, type: 3}
   isDead: 0
   isConvertedToBlock: 0
   blockMaxHealth: 50
---- !u!114 &3241276497833790759
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7057109017575632913}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9dea9994dc8fce24491b1821f4b0a8f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 60
 --- !u!50 &3924055008892620813
 Rigidbody2D:
   serializedVersion: 4
@@ -307,3 +277,24 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &986893759650318224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7057109017575632913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bd44b7a9198be44a94cbf87c263e8a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 1.5
+  rotateSpeed: 120
+  detectionRange: 10
+  shootingInterval: 2
+  projectilePrefab: {fileID: 6004571966699598178, guid: 0191417551f30964aa2e10d73d5ff7e5, type: 3}
+  projectileSpeed: 12
+  projectileDamage: 20
+  canBePickedWhileAlive: 1
+  allowedPickupHandIndex: 0

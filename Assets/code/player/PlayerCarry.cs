@@ -46,7 +46,7 @@ public class PlayerCarry : MonoBehaviour
 
         // Иначе — пытаемся подобрать
         Collider2D[] hits;
-        if (enemyLayer != 0)
+        if (enemyLayer.value != 0)
             hits = Physics2D.OverlapCircleAll(transform.position, pickupRange, enemyLayer.value);
         else
             hits = Physics2D.OverlapCircleAll(transform.position, pickupRange);
@@ -126,15 +126,17 @@ public class PlayerCarry : MonoBehaviour
                 Debug.Log("PlayerCarry: целевая рука для поднятия shooter занята.");
                 return;
             }
+
+            PickupLiveShooter(best, handIndex);
+            return;
         }
-        else
+
+        // Обычный путь для трупов/блоков
+        handIndex = GetClosestFreeHand(best.transform.position);
+        if (handIndex == -1)
         {
-            handIndex = GetClosestFreeHand(best.transform.position);
-            if (handIndex == -1)
-            {
-                Debug.Log("PlayerCarry: нет свободных рук.");
-                return;
-            }
+            Debug.Log("PlayerCarry: нет свободных рук.");
+            return;
         }
 
         if (bestBlock != null || (bestEnemy != null && bestEnemy.isConvertedToBlock))
@@ -179,6 +181,37 @@ public class PlayerCarry : MonoBehaviour
             }
         }
         return bestIndex;
+    }
+
+    void PickupLiveShooter(GameObject obj, int handIndex)
+    {
+        // Специальный путь подъёма для живого Shooter — делает объект переносимым и оставляет EnemyHealth.isDead == false
+        var shooter = obj.GetComponent<ShooterController>();
+        var enemy = obj.GetComponent<EnemyHealth>();
+
+        carriedObjects[handIndex] = obj;
+
+        var rb = obj.GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.velocity = Vector2.zero;
+            rb.simulated = false; // важное условие для ShooterController.IsCarried()
+            rb.bodyType = RigidbodyType2D.Dynamic;
+        }
+
+        var col = obj.GetComponent<Collider2D>();
+        if (col != null) col.enabled = false;
+
+        obj.transform.SetParent(hands[handIndex], worldPositionStays: true);
+        obj.transform.position = hands[handIndex].position;
+
+        obj.layer = carriedLayer;
+
+        // Если нужно — отключаем движение/следование
+        var ef = obj.GetComponent<EnemyFollow>();
+        if (ef != null) ef.enabled = false;
+
+        Debug.Log($"PlayerCarry: поднял живого shooter {obj.name} в руку {handIndex}");
     }
 
     void Pickup(GameObject obj, int handIndex)
