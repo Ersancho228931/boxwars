@@ -201,6 +201,10 @@ MonoBehaviour:
   isDead: 0
   isConvertedToBlock: 0
   blockMaxHealth: 50
+  isBoss: 0
+  bossName: THE BOSS
+  damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
+  damageFlashDuration: 0.12
 --- !u!114 &3241276497833790759
 MonoBehaviour:
   m_ObjectHideFlags: 0

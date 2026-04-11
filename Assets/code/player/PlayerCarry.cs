@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class PlayerCarry : MonoBehaviour
 {
@@ -8,8 +9,17 @@ public class PlayerCarry : MonoBehaviour
     public KeyCode pickupKey = KeyCode.Space;
     public string carriedLayerName = "Carried"; // создайте этот слой в Project Settings или будет использован Ignore Raycast
 
+    [Header("Carried attack (use dead corpse as weapon)")]
+    public int carriedAttackDamage = 25;
+    public float carriedAttackRadius = 1.5f;
+    public float carriedAttackCooldown = 1f;
+    public AudioClip carriedAttackSound;
+    public float carriedAttackSoundVolume = 1f;
+
     private GameObject[] carriedObjects;
     private int carriedLayer;
+
+    private float lastCarriedAttackTime = -999f;
 
     void Start()
     {
@@ -31,10 +41,90 @@ public class PlayerCarry : MonoBehaviour
 
     void Update()
     {
+        // Использование переносимого трупа — левая кнопка мыши
+        if (Input.GetMouseButtonDown(0))
+        {
+            TryUseCarriedAsWeapon();
+        }
+
+        // Подбор/бросок — отдельной клавишей
         if (Input.GetKeyDown(pickupKey))
             TryPickupOrDrop();
     }
 
+    void TryUseCarriedAsWeapon()
+    {
+        // перезарядка
+        if (Time.time < lastCarriedAttackTime + carriedAttackCooldown) return;
+
+        // ищем в руках первый подходящий объект: EnemyHealth, isDead == true, не converted в Block, и не Shooter
+        for (int i = 0; i < carriedObjects.Length; i++)
+        {
+            var obj = carriedObjects[i];
+            if (obj == null) continue;
+
+            var eh = obj.GetComponent<EnemyHealth>();
+            var shooter = obj.GetComponent<ShooterController>();
+            var block = obj.GetComponent<Block>();
+
+            // только мёртвый обычный враг (труп), не конвертированный в блок и не shooter
+            if (eh != null && eh.isDead && !eh.isConvertedToBlock && shooter == null)
+            {
+                PerformCarriedAttack();
+                lastCarriedAttackTime = Time.time;
+                return;
+            }
+
+            // если держим стену/конвертированный труп — не используем как оружие
+            if (block != null) continue;
+        }
+    }
+
+    void PerformCarriedAttack()
+    {
+        // воспроизводим звук атаки
+        if (AudioManager.Instance != null && carriedAttackSound != null)
+        {
+            AudioManager.Instance.PlayOneShot(carriedAttackSound, carriedAttackSoundVolume);
+        }
+        else if (carriedAttackSound != null)
+        {
+            var src = gameObject.AddComponent<AudioSource>();
+            src.PlayOneShot(carriedAttackSound, carriedAttackSoundVolume);
+            Destroy(src, carriedAttackSound.length + 0.1f);
+        }
+
+        // ищем врагов в радиусе вокруг игрока
+        Collider2D[] hits;
+        if (enemyLayer.value != 0)
+            hits = Physics2D.OverlapCircleAll(transform.position, carriedAttackRadius, enemyLayer.value);
+        else
+            hits = Physics2D.OverlapCircleAll(transform.position, carriedAttackRadius);
+
+        int hitCount = 0;
+        foreach (var c in hits)
+        {
+            if (c == null) continue;
+
+            // ищем EnemyHealth в самой коллайдерной иерархии
+            var target = c.GetComponent<EnemyHealth>();
+            if (target == null)
+                target = c.GetComponentInParent<EnemyHealth>();
+
+            if (target == null) continue;
+            if (target.isDead) continue; // не наносим урон мёртвым
+            if (target.gameObject == this.gameObject) continue;
+
+            // предотвращаем friendly fire: если атакует enemy (редкий кейс) - уже контролируется в Projectile/других местах
+            target.TakeDamage(carriedAttackDamage);
+            hitCount++;
+        }
+
+        if (hitCount > 0)
+            Debug.Log($"PlayerCarry: carried attack hit {hitCount} targets for {carriedAttackDamage} damage.");
+    }
+
+    // --- Pickup / Drop logic (full implementation) ---
     void TryPickupOrDrop()
     {
         if (HasAnyCarried())
@@ -75,6 +165,7 @@ public class PlayerCarry : MonoBehaviour
             var enemy = obj.GetComponent<EnemyHealth>();
             var shooter = obj.GetComponent<ShooterController>();
 
+            // нельзя поднимать живого врага, кроме shooter с разрешением
             if (enemy != null && !enemy.isDead)
             {
                 if (shooter == null || !shooter.canBePickedWhileAlive)
@@ -101,6 +192,7 @@ public class PlayerCarry : MonoBehaviour
 
         int handIndex = -1;
 
+        // если это живой shooter — используем его allowedPickupHandIndex
         if (bestEnemy != null && !bestEnemy.isDead && bestShooter != null && bestShooter.canBePickedWhileAlive)
         {
             int desired = bestShooter.allowedPickupHandIndex;
@@ -178,7 +270,6 @@ public class PlayerCarry : MonoBehaviour
         Vector3 worldScale = child.lossyScale;
         child.SetParent(newParent, worldPositionStays: false);
         Vector3 parentScale = newParent != null ? newParent.lossyScale : Vector3.one;
-        // защитные меры от деления на ноль
         float px = parentScale.x == 0 ? 1f : parentScale.x;
         float py = parentScale.y == 0 ? 1f : parentScale.y;
         float pz = parentScale.z == 0 ? 1f : parentScale.z;
@@ -400,5 +491,8 @@ public class PlayerCarry : MonoBehaviour
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, pickupRange);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, carriedAttackRadius);
     }
 }

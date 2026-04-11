@@ -27,6 +27,13 @@ public class EnemyHealth : MonoBehaviour
     public bool isBoss = false;
     public string bossName = "THEBOSS";
 
+    [Header("Damage flash")]
+    public Color damageFlashColor = Color.red;
+    public float damageFlashDuration = 0.12f;
+
+    private Color originalColor;
+    private Coroutine flashRoutine;
+
     void Start()
     {
         currentHealth = maxHealth;
@@ -35,6 +42,7 @@ public class EnemyHealth : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
+        originalColor = sr != null ? sr.color : Color.white;
         spawnTime = Time.time;
 
         if (isBoss && UIManager.Instance != null)
@@ -62,6 +70,10 @@ public class EnemyHealth : MonoBehaviour
 
         currentHealth -= damage;
 
+        // flash color
+        if (flashRoutine != null) StopCoroutine(flashRoutine);
+        flashRoutine = StartCoroutine(FlashDamage());
+
         if (isBoss && UIManager.Instance != null)
         {
             UIManager.Instance.UpdateBossHealth(Mathf.Max(0, currentHealth));
@@ -71,6 +83,24 @@ public class EnemyHealth : MonoBehaviour
         {
             Die();
         }
+    }
+
+    System.Collections.IEnumerator FlashDamage()
+    {
+        if (sr == null) yield break;
+        sr.color = damageFlashColor;
+        yield return new WaitForSeconds(damageFlashDuration);
+        float t = 0f;
+        float fade = Mathf.Max(0.05f, damageFlashDuration);
+        Color from = sr.color;
+        while (t < fade)
+        {
+            t += Time.deltaTime;
+            sr.color = Color.Lerp(from, originalColor, t / fade);
+            yield return null;
+        }
+        sr.color = originalColor;
+        flashRoutine = null;
     }
 
     void Die()
