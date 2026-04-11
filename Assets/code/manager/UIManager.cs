@@ -1,7 +1,8 @@
+using System.Threading;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using TMPro;
 
 public class UIManager : MonoBehaviour
 {
@@ -25,6 +26,9 @@ public class UIManager : MonoBehaviour
 
     public void ShowWin()
     {
+        int milliseconds = 2000;
+        Thread.Sleep(milliseconds);
+
         if (hud != null) hud.SetActive(false);
         if (winScreen != null) winScreen.SetActive(true);
         if (loseScreen != null) loseScreen.SetActive(false);
