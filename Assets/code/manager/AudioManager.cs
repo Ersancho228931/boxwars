@@ -1,88 +1,52 @@
 using UnityEngine;
+
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
 
-    [Header("SFX")]
+    [Header("SFX Clips")]
     public AudioClip shooterShoot;
     public AudioClip playerWalk;
+    public AudioClip playerWalkInjured; // New: Louder/Different walk
     public AudioClip enemyBreak;
     public AudioClip dayNightChange;
     public AudioClip bomberExplosion;
+    public AudioClip bossSpawn; // New: Boss Spawn sound
 
-    [Header("Music")]
-    public AudioClip backgroundMusic; // основная музыка уровня
-    public AudioClip bossMusic;       // опционально можно задать глобально
-    public AudioSource musicSource;
-    public AudioSource sfxSource; // one-shot SFX
-
-    private AudioClip previousMusicClip; // для восстановления после босса
+    [Header("Audio Sources")]
+    public AudioSource sfxSource;
+    private AudioSource walkSource;
 
     void Awake()
     {
-        if (Instance != null && Instance != this) Destroy(gameObject);
+        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
-        if (musicSource == null) musicSource = gameObject.AddComponent<AudioSource>();
+        DontDestroyOnLoad(gameObject);
+
         if (sfxSource == null) sfxSource = gameObject.AddComponent<AudioSource>();
-        musicSource.loop = true;
+        walkSource = gameObject.AddComponent<AudioSource>();
     }
 
     public void PlayOneShot(AudioClip clip, float vol = 1f)
     {
-        if (clip == null || sfxSource == null) return;
+        if (clip == null) return;
         sfxSource.PlayOneShot(clip, vol);
     }
 
-    public void PlayMusic(AudioClip clip, float vol = 1f)
+    public void PlayWalk(bool lowHealth, float vol = 0.8f)
     {
-        if (musicSource == null) return;
-        if (clip == null)
-        {
-            musicSource.Stop();
-            musicSource.clip = null;
-            return;
-        }
-        musicSource.clip = clip;
-        musicSource.volume = vol;
-        musicSource.loop = true;
-        musicSource.Play();
+        // If low health, use injured clip and boost volume
+        AudioClip clipToPlay = lowHealth ? playerWalkInjured : playerWalk;
+        float finalVol = lowHealth ? vol * 1.5f : vol;
+
+        if (clipToPlay == null) return;
+        walkSource.PlayOneShot(clipToPlay, Mathf.Clamp01(finalVol));
     }
 
-    public void StopMusic()
+    public void StopWalk()
     {
-        if (musicSource == null) return;
-        musicSource.Stop();
+        if (walkSource != null) walkSource.Stop();
     }
 
-    // convenience: play background music assigned in inspector
-    public void PlayBackgroundMusic(float vol = 1f)
-    {
-        if (backgroundMusic == null) return;
-        PlayMusic(backgroundMusic, vol);
-    }
-
-    // start boss music and remember previous clip for restore
-    public void PlayBossMusic(AudioClip bossClip, float vol = 1f)
-    {
-        if (musicSource == null) return;
-        // save current clip (could be backgroundMusic or something else)
-        previousMusicClip = musicSource.clip;
-        // if caller didn't provide a boss clip, try global bossMusic field
-        AudioClip toPlay = bossClip != null ? bossClip : bossMusic;
-        if (toPlay == null) return;
-        PlayMusic(toPlay, vol);
-    }
-
-    // restore previous music (or backgroundMusic if previous is null)
-    public void RestorePreviousMusic(float vol = 1f)
-    {
-        if (previousMusicClip != null)
-        {
-            PlayMusic(previousMusicClip, vol);
-            previousMusicClip = null;
-            return;
-        }
-        // fallback to background music
-        PlayBackgroundMusic(vol);
-    }
+    public void PlayBossSpawn() => PlayOneShot(bossSpawn, 1f);
 }

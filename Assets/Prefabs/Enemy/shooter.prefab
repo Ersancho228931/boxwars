@@ -222,7 +222,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 6004571966699598178, guid: 0191417551f30964aa2e10d73d5ff7e5, type: 3}
   projectileSpeed: 12
   projectileDamage: 20
-  shootSound: {fileID: 0}
+  shootSound: {fileID: 8300000, guid: c66be0776accfe04799eabacf3ccd746, type: 3}
   canBePickedWhileAlive: 1
   allowedPickupHandIndex: 0
   shootWhenConverted: 1

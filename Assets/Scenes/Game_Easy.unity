@@ -210,6 +210,226 @@ Transform:
   - {fileID: 744175530}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &124724579
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 124724581}
+  - component: {fileID: 124724580}
+  m_Layer: 0
+  m_Name: Spawner (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &124724580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 124724579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6c12c3d21667a04b9158e49f94a31e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxEnemiesDay: 4
+  maxEnemiesNight: 10
+  maxDeadBodies: 10000
+  minSpawnTime: 2
+  maxSpawnTime: 7
+  spawnEntries:
+  - typeName: ogn
+    prefab: {fileID: 7057109017575632913, guid: db795f5b8b9b913458631fcfb94793fb, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 1
+    spawnDayMax: 4
+    spawnCountDay: 1
+    spawnCountNight: 1
+    spawnIntervalMin: 5
+    spawnIntervalMax: 7
+  - typeName: zub
+    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
+    spawnEveryDay: 1
+    spawnDayMin: 1
+    spawnDayMax: 5
+    spawnCountDay: 1
+    spawnCountNight: 2
+    spawnIntervalMin: 5
+    spawnIntervalMax: 7
+  - typeName: bmb
+    prefab: {fileID: 7057109017575632913, guid: 26663e3377ed35a47aca9a979cbaa67a, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 2
+    spawnDayMax: 4
+    spawnCountDay: 1
+    spawnCountNight: 1
+    spawnIntervalMin: 5
+    spawnIntervalMax: 7
+  - typeName: BOSS
+    prefab: {fileID: 7057109017575632913, guid: 984ecac7182054e4a85af53a987c7388, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 0
+    spawnDayMax: 0
+    spawnCountDay: 0
+    spawnCountNight: 0
+    spawnIntervalMin: 3
+    spawnIntervalMax: 5
+--- !u!4 &124724581
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 124724579}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 8.29, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &150566168
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 150566171}
+  - component: {fileID: 150566170}
+  - component: {fileID: 150566169}
+  m_Layer: 5
+  m_Name: Info
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &150566169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 150566168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: 
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 54.89
+  m_fontSizeBase: 54.89
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 1
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 256
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: -653.5366, w: -89.86487}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &150566170
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 150566168}
+  m_CullTransparentMesh: 1
+--- !u!224 &150566171
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 150566168}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 128, y: 192}
+  m_SizeDelta: {x: 200, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &379432728
 GameObject:
   m_ObjectHideFlags: 0
@@ -475,14 +695,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e62bfbe7208b6e043b4682c3044268b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shooterShoot: {fileID: 0}
-  playerWalk: {fileID: 0}
-  enemyBreak: {fileID: 0}
-  dayNightChange: {fileID: 0}
-  bomberExplosion: {fileID: 0}
-  backgroundMusic: {fileID: 0}
-  bossMusic: {fileID: 0}
-  musicSource: {fileID: 1614094893}
+  shooterShoot: {fileID: 8300000, guid: c66be0776accfe04799eabacf3ccd746, type: 3}
+  playerWalk: {fileID: 8300000, guid: 50a32302d6e7ed54a9125a2e35b21124, type: 3}
+  playerWalkInjured: {fileID: 0}
+  enemyBreak: {fileID: 8300000, guid: 2f9a9c436e57e77459087af3deefc959, type: 3}
+  dayNightChange: {fileID: 8300000, guid: 65e7c24b32d2fb246bef77d9822fed06, type: 3}
+  bomberExplosion: {fileID: 8300000, guid: 576c7dca086599744a54b97701d6ad91, type: 3}
+  bossSpawn: {fileID: 0}
   sfxSource: {fileID: 379432729}
 --- !u!4 &626400244
 Transform:
@@ -494,6 +713,92 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.8881884, y: 1.4872265, z: 10.933255}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &737792392
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 737792394}
+  - component: {fileID: 737792393}
+  m_Layer: 0
+  m_Name: Spawner (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &737792393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 737792392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6c12c3d21667a04b9158e49f94a31e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxEnemiesDay: 4
+  maxEnemiesNight: 10
+  maxDeadBodies: 10000
+  minSpawnTime: 2
+  maxSpawnTime: 7
+  spawnEntries:
+  - typeName: ogn
+    prefab: {fileID: 7057109017575632913, guid: db795f5b8b9b913458631fcfb94793fb, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 1
+    spawnDayMax: 1
+    spawnCountDay: 1
+    spawnCountNight: 1
+    spawnIntervalMin: 5
+    spawnIntervalMax: 7
+  - typeName: zub
+    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
+    spawnEveryDay: 1
+    spawnDayMin: 1
+    spawnDayMax: 4
+    spawnCountDay: 1
+    spawnCountNight: 2
+    spawnIntervalMin: 5
+    spawnIntervalMax: 7
+  - typeName: bmb
+    prefab: {fileID: 7057109017575632913, guid: 26663e3377ed35a47aca9a979cbaa67a, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 2
+    spawnDayMax: 4
+    spawnCountDay: 1
+    spawnCountNight: 1
+    spawnIntervalMin: 5
+    spawnIntervalMax: 7
+  - typeName: BOSS
+    prefab: {fileID: 7057109017575632913, guid: 984ecac7182054e4a85af53a987c7388, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 5
+    spawnDayMax: 5
+    spawnCountDay: 0
+    spawnCountNight: 1
+    spawnIntervalMin: 3
+    spawnIntervalMax: 5
+--- !u!4 &737792394
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 737792392}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.04, y: 3.85, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1248,36 +1553,36 @@ MonoBehaviour:
     prefab: {fileID: 7057109017575632913, guid: db795f5b8b9b913458631fcfb94793fb, type: 3}
     spawnEveryDay: 0
     spawnDayMin: 1
-    spawnDayMax: 5
-    spawnCountDay: 2
-    spawnCountNight: 2
-    spawnIntervalMin: 3
-    spawnIntervalMax: 4
+    spawnDayMax: 4
+    spawnCountDay: 1
+    spawnCountNight: 1
+    spawnIntervalMin: 5
+    spawnIntervalMax: 7
   - typeName: zub
     prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
     spawnEveryDay: 1
     spawnDayMin: 1
     spawnDayMax: 5
-    spawnCountDay: 2
+    spawnCountDay: 1
     spawnCountNight: 2
-    spawnIntervalMin: 3
-    spawnIntervalMax: 4
+    spawnIntervalMin: 5
+    spawnIntervalMax: 7
   - typeName: bmb
     prefab: {fileID: 7057109017575632913, guid: 26663e3377ed35a47aca9a979cbaa67a, type: 3}
     spawnEveryDay: 0
     spawnDayMin: 2
-    spawnDayMax: 5
+    spawnDayMax: 4
     spawnCountDay: 1
-    spawnCountNight: 3
-    spawnIntervalMin: 3
-    spawnIntervalMax: 4
+    spawnCountNight: 1
+    spawnIntervalMin: 5
+    spawnIntervalMax: 7
   - typeName: BOSS
     prefab: {fileID: 7057109017575632913, guid: 984ecac7182054e4a85af53a987c7388, type: 3}
     spawnEveryDay: 0
-    spawnDayMin: 5
-    spawnDayMax: 5
+    spawnDayMin: 0
+    spawnDayMax: 0
     spawnCountDay: 0
-    spawnCountNight: 1
+    spawnCountNight: 0
     spawnIntervalMin: 3
     spawnIntervalMax: 5
 --- !u!4 &1779884564
@@ -1529,6 +1834,10 @@ PrefabInstance:
       propertyPath: pickupRange
       value: 1.5
       objectReference: {fileID: 0}
+    - target: {fileID: 2469105019862120792, guid: 688d43e834fb4e547a311bd6f265cad4, type: 3}
+      propertyPath: carriedAttackSound
+      value: 
+      objectReference: {fileID: 8300000, guid: c66be0776accfe04799eabacf3ccd746, type: 3}
     - target: {fileID: 3013150031486954484, guid: 688d43e834fb4e547a311bd6f265cad4, type: 3}
       propertyPath: infoText
       value: 
@@ -1687,8 +1996,11 @@ SceneRoots:
   - {fileID: 885822381}
   - {fileID: 1080298673}
   - {fileID: 1779884564}
+  - {fileID: 124724581}
+  - {fileID: 737792394}
   - {fileID: 1614094894}
   - {fileID: 379432730}
   - {fileID: 1326910932}
   - {fileID: 62646507}
+  - {fileID: 150566171}
   - {fileID: 626400244}
