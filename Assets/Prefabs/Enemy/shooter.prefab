@@ -105,7 +105,7 @@ MonoBehaviour:
   deadSprite: {fileID: 21300000, guid: 9db8d80f27d64462ba094c7cee361f86, type: 3}
   isDead: 0
   isConvertedToBlock: 0
-  blockMaxHealth: 20
+  blockMaxHealth: 100
   isBoss: 0
   bossName: THEBOSS
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
