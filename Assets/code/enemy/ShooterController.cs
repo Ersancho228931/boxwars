@@ -98,7 +98,16 @@ public class ShooterController : MonoBehaviour
         {
             float step = rotateSpeed * Time.fixedDeltaTime;
             float targetRotation = Mathf.MoveTowardsAngle(rb.rotation, fixedRotation, step);
-            rb.MoveRotation(targetRotation);
+            
+            // Static bodies don't support MoveRotation - set rotation directly
+            if (rb.bodyType == RigidbodyType2D.Static)
+            {
+                transform.rotation = Quaternion.Euler(0, 0, targetRotation);
+            }
+            else
+            {
+                rb.MoveRotation(targetRotation);
+            }
         }
         fixedHasRotation = false;
     }
@@ -161,52 +170,35 @@ public class ShooterController : MonoBehaviour
 
     void HandleConvertedBlockBehavior()
     {
+        // Turrets only shoot at OTHER LIVE ENEMIES, not the player
         var enemies = FindObjectsOfType<EnemyHealth>();
-        Transform best = null;
-        float bestDist = Mathf.Infinity;
+        Transform target = null;
+        float closestDist = Mathf.Infinity;
 
         foreach (var e in enemies)
         {
             if (e == null) continue;
-            if (e.gameObject == gameObject) continue;
-            if (e.isDead) continue;
+            if (e.gameObject == gameObject) continue;  // Skip self
+            if (e.isDead) continue;                     // Skip dead enemies
             float d = Vector2.Distance(transform.position, e.transform.position);
-            if (d < bestDist)
+            if (d < closestDist && d <= convertedDetectionRange)
             {
-                bestDist = d;
-                best = e.transform;
+                closestDist = d;
+                target = e.transform;
             }
         }
 
-        if (best == null)
-        {
-            if (rb != null && rb.bodyType != RigidbodyType2D.Static) fixedVelocity = Vector2.zero;
-            return;
-        }
+        if (target == null) return;
 
         Vector2 currentPos = rb != null ? rb.position : (Vector2)transform.position;
-        Vector2 toTarget = ((Vector2)best.position - currentPos);
-        float distToTarget = toTarget.magnitude;
+        Vector2 toTarget = ((Vector2)target.position - currentPos);
 
-        if (rb != null && rb.bodyType != RigidbodyType2D.Static)
-            fixedVelocity = Vector2.zero;
-
-        if (toTarget.sqrMagnitude > 0.0001f)
+        if (Time.time > lastConvertedShotTime + shootingInterval)
         {
-            float angle = Mathf.Atan2(toTarget.y, toTarget.x) * Mathf.Rad2Deg - 90f;
-            fixedRotation = angle;
-            fixedHasRotation = true;
-        }
-
-        if (distToTarget <= convertedDetectionRange &&
-     Time.time > lastConvertedShotTime + shootingInterval)   // ← use the same interval
-        {
-            if (enableDebug) Debug.Log($"{gameObject.name} (converted) shooting at enemy {best.name} (dist {distToTarget:F2})");
+            if (enableDebug) Debug.Log($"{gameObject.name} (turret) shooting at {target.name} (dist {closestDist:F2})");
             Shoot((toTarget.sqrMagnitude > 0.0001f) ? toTarget.normalized : Vector2.up);
-            lastConvertedShotTime = Time.time;   // ← important
+            lastConvertedShotTime = Time.time;
         }
-
-
     }
 
     void HandleCarried()
@@ -263,9 +255,15 @@ public class ShooterController : MonoBehaviour
         if (AudioManager.Instance != null && shootSound != null)
             AudioManager.Instance.PlayOneShot(shootSound);
 
+        // IMPORTANT: Ignore collision between projectile and owner (so it doesn't immediately hit itself)
+        var projColls = p.GetComponentsInChildren<Collider2D>();
+        var ownerColls = gameObject.GetComponentsInChildren<Collider2D>();
+        foreach (var pc in projColls)
+            foreach (var oc in ownerColls)
+                if (pc != null && oc != null) Physics2D.IgnoreCollision(pc, oc, true);
+
         if (IsCarried())
         {
-            var projColls = p.GetComponentsInChildren<Collider2D>();
             GameObject playerObj = player != null ? player.gameObject : GameObject.FindWithTag("Player");
             if (playerObj != null)
             {
@@ -274,11 +272,6 @@ public class ShooterController : MonoBehaviour
                     foreach (var plc in playerColls)
                         if (pc != null && plc != null) Physics2D.IgnoreCollision(pc, plc, true);
             }
-
-            var ownerColls = gameObject.GetComponentsInChildren<Collider2D>();
-            foreach (var pc in projColls)
-                foreach (var oc in ownerColls)
-                    if (pc != null && oc != null) Physics2D.IgnoreCollision(pc, oc, true);
         }
     }
 

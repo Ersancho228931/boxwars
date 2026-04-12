@@ -18,6 +18,10 @@ public class UIManager : MonoBehaviour
     public TMP_Text bossText;
     public Slider bossHealthBar;
 
+    [Header("Sounds")]
+    public AudioClip winSound;
+    public AudioClip loseSound;
+
     void Awake()
     {
         // FIXED: just overwrite so the NEW scene always gets a fresh manager
@@ -32,6 +36,10 @@ public class UIManager : MonoBehaviour
 
     private System.Collections.IEnumerator WinSequence()
     {
+        // Play win sound
+        if (winSound != null && AudioManager.Instance != null)
+            AudioManager.Instance.PlayOneShot(winSound);
+
         yield return new WaitForSeconds(2f);
 
         if (hud != null) hud.SetActive(false);
@@ -42,6 +50,10 @@ public class UIManager : MonoBehaviour
 
     public void ShowLose()
     {
+        // Play lose sound
+        if (loseSound != null && AudioManager.Instance != null)
+            AudioManager.Instance.PlayOneShot(loseSound);
+
         if (hud != null) hud.SetActive(false);
         if (loseScreen != null) loseScreen.SetActive(true);
         if (winScreen != null) winScreen.SetActive(false);

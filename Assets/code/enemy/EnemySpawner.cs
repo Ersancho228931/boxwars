@@ -24,7 +24,7 @@ public class EnemySpawner : MonoBehaviour
     [Header("Global spawn limits")]
     public int maxEnemiesDay = 5;
     public int maxEnemiesNight = 10;
-    public int maxDeadBodies = 10;
+    public int maxDeadBodies = 50;  // Increased to keep more dead bodies visible
 
     [Header("Default spawn timing (fallback)")]
     public float minSpawnTime = 2f;
@@ -151,11 +151,15 @@ public class EnemySpawner : MonoBehaviour
                     {
                         currentEnemies--;
                         deadBodies.Add(e);
+                        // Only clean up old bodies if we exceed the limit significantly
                         if (deadBodies.Count > maxDeadBodies)
                         {
-                            if (deadBodies[0] != null)
-                                Destroy(deadBodies[0]);
+                            // Remove from list but DON'T destroy - let it stay as a corpse
+                            GameObject oldBody = deadBodies[0];
                             deadBodies.RemoveAt(0);
+                            // Destroy old bodies only after a delay to avoid sudden disappearing
+                            if (oldBody != null)
+                                Destroy(oldBody, 5f);
                         }
                     };
                 }

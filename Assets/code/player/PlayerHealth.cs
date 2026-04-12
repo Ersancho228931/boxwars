@@ -21,6 +21,9 @@ public class PlayerHealth : MonoBehaviour
     public Color damageFlashColor = Color.white;
     public float flashDuration = 0.12f;
 
+    [Header("Sound")]
+    public AudioClip damageSound;
+
     [Header("Startup Info text")]
     public TMP_Text infoText;
     [TextArea] public string infoMessage = "Welcome!";
@@ -58,6 +61,10 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
+
+        // Play damage sound
+        if (damageSound != null && AudioManager.Instance != null)
+            AudioManager.Instance.PlayOneShot(damageSound, 1.0f);
 
         // ONE-TIME INJURED SOUND LOGIC
         if (currentHealth <= 20 && !playedInjuredSound)

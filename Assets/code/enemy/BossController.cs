@@ -7,6 +7,7 @@ public class BossController : MonoBehaviour
 {
     [Header("Boss")]
     public string bossName = "THEBOSS";
+    public AudioClip bossSpawnSound;
 
     private EnemyHealth enemyHealth;
 
@@ -14,7 +15,10 @@ public class BossController : MonoBehaviour
     {
         enemyHealth = GetComponent<EnemyHealth>();
 
-        // Показать баннер босса при спавне
+        // Play boss spawn sound
+        if (bossSpawnSound != null && AudioManager.Instance != null)
+            AudioManager.Instance.PlayOneShot(bossSpawnSound);
+
         if (UIManager.Instance != null)
             UIManager.Instance.ShowBoss(bossName);
     }
@@ -34,7 +38,7 @@ public class BossController : MonoBehaviour
 
     void OnBossDeath()
     {
-        // При смерти босса — экран победы
+        // пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         if (UIManager.Instance != null)
             UIManager.Instance.ShowWin();
     }
