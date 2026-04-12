@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  deadSprite: {fileID: 21300000, guid: badb93954258d42a88b7d64d7be54039, type: 3}
+  deadSprite: {fileID: 21300000, guid: 99b3f9197f81c456d86b56559322dabe, type: 3}
   isDead: 0
   isConvertedToBlock: 0
   blockMaxHealth: 50

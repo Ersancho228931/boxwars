@@ -33,6 +33,13 @@ public class Projectile : MonoBehaviour
     {
         if (hit == null) return;
 
+        // FIRST: Check if this is our owner and ignore it
+        if (owner != null)
+        {
+            if (hit == owner || hit.transform.IsChildOf(owner.transform))
+                return;
+        }
+
         // Allow carried shooter (even when converted) to damage enemies
         bool isCarriedShooter = owner != null && owner.GetComponent<ShooterController>() != null
                                 && owner.GetComponent<ShooterController>().IsCarried();
@@ -51,13 +58,6 @@ public class Projectile : MonoBehaviour
                 Destroy(gameObject);
                 return;
             }
-        }
-
-        // Original damage logic
-        if (owner != null)
-        {
-            if (hit == owner || hit.transform.IsChildOf(owner.transform))
-                return;
         }
 
         var eh = hit.GetComponent<EnemyHealth>() ?? hit.GetComponentInParent<EnemyHealth>();

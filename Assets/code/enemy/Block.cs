@@ -8,6 +8,12 @@ public class Block : MonoBehaviour
 
     void Start()
     {
+        Initialize(maxHealth);
+    }
+
+    public void Initialize(int newMaxHealth)
+    {
+        maxHealth = newMaxHealth;
         currentHealth = maxHealth;
     }
 

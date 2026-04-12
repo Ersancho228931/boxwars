@@ -86,11 +86,11 @@ public class EnemyHealth : MonoBehaviour
         flashRoutine = null;
     }
 
-    void Die()
+    public void Die()
     {
         if (isDead) return;
         isDead = true;
-        OnDeath?.Invoke();
+        OnDeath?.Invoke();  // IMPORTANT: Call this BEFORE changing sprite so spawner can track death
 
         if (deadSprite != null && sr != null)
             sr.sprite = deadSprite;
@@ -125,6 +125,9 @@ public class EnemyHealth : MonoBehaviour
 
         if (isBoss && UIManager.Instance != null)
             UIManager.Instance.ShowWin();
+        
+        // IMPORTANT: Don't destroy the corpse automatically - let EnemySpawner manage corpse lifetime
+        // The corpse will be cleaned up based on maxDeadBodies limit and delay
     }
 
     public void ConvertToBlock()
@@ -132,10 +135,11 @@ public class EnemyHealth : MonoBehaviour
         if (isConvertedToBlock) return;
         isConvertedToBlock = true;
 
-        if (GetComponent<Block>() == null)
+        Block blockComp = GetComponent<Block>();
+        if (blockComp == null)
         {
-            var b = gameObject.AddComponent<Block>();
-            b.maxHealth = blockMaxHealth;
+            blockComp = gameObject.AddComponent<Block>();
+            blockComp.Initialize(blockMaxHealth);  // Properly initialize health
         }
 
         int wallLayer = LayerMask.NameToLayer("Wall");
@@ -143,9 +147,10 @@ public class EnemyHealth : MonoBehaviour
 
         if (rb != null)
         {
-            rb.bodyType = RigidbodyType2D.Static;
+            rb.bodyType = RigidbodyType2D.Kinematic;  // Kinematic allows rotation, Static doesn't!
             rb.velocity = Vector2.zero;
             rb.angularVelocity = 0f;
+            rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
         }
 
         Collider2D col = GetComponent<Collider2D>();
