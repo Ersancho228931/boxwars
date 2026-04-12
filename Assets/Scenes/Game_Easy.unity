@@ -373,6 +373,101 @@ RectTransform:
   m_AnchoredPosition: {x: 128, y: 192}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &207823465
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 207823467}
+  - component: {fileID: 207823466}
+  m_Layer: 0
+  m_Name: Spawner (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &207823466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 207823465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6c12c3d21667a04b9158e49f94a31e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxEnemiesDay: 4
+  maxEnemiesNight: 10
+  maxDeadBodies: 10000
+  minSpawnTime: 2
+  maxSpawnTime: 7
+  spawnEntries:
+  - typeName: 1 night enemy
+    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 1
+    spawnDayMax: 1
+    spawnCountDay: 0
+    spawnCountNight: 2
+    spawnIntervalMin: 3
+    spawnIntervalMax: 13
+  - typeName: 2 night enemy
+    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 2
+    spawnDayMax: 2
+    spawnCountDay: 0
+    spawnCountNight: 3
+    spawnIntervalMin: 3
+    spawnIntervalMax: 5
+  - typeName: 2 night shooter
+    prefab: {fileID: 7057109017575632913, guid: db795f5b8b9b913458631fcfb94793fb, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 2
+    spawnDayMax: 2
+    spawnCountDay: 0
+    spawnCountNight: 1
+    spawnIntervalMin: 3
+    spawnIntervalMax: 5
+  - typeName: Boss guys
+    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 5
+    spawnDayMax: 5
+    spawnCountDay: 0
+    spawnCountNight: 5
+    spawnIntervalMin: 3
+    spawnIntervalMax: 10
+  - typeName: Boss shooters
+    prefab: {fileID: 7057109017575632913, guid: db795f5b8b9b913458631fcfb94793fb, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 5
+    spawnDayMax: 5
+    spawnCountDay: 0
+    spawnCountNight: 3
+    spawnIntervalMin: 3
+    spawnIntervalMax: 5
+--- !u!4 &207823467
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 207823465}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 8.96, y: 0.52, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &379432728
 GameObject:
   m_ObjectHideFlags: 0
@@ -550,6 +645,92 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &388866135
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 388866137}
+  - component: {fileID: 388866136}
+  m_Layer: 0
+  m_Name: Spawner (7)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &388866136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 388866135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6c12c3d21667a04b9158e49f94a31e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxEnemiesDay: 4
+  maxEnemiesNight: 10
+  maxDeadBodies: 10000
+  minSpawnTime: 2
+  maxSpawnTime: 7
+  spawnEntries:
+  - typeName: 1 night enemy
+    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 1
+    spawnDayMax: 1
+    spawnCountDay: 0
+    spawnCountNight: 2
+    spawnIntervalMin: 3
+    spawnIntervalMax: 13
+  - typeName: 4 day enemy
+    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 4
+    spawnDayMax: 4
+    spawnCountDay: 1
+    spawnCountNight: 0
+    spawnIntervalMin: 7
+    spawnIntervalMax: 8
+  - typeName: Boss guys
+    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 5
+    spawnDayMax: 5
+    spawnCountDay: 0
+    spawnCountNight: 5
+    spawnIntervalMin: 3
+    spawnIntervalMax: 10
+  - typeName: Boss bombers
+    prefab: {fileID: 7057109017575632913, guid: 26663e3377ed35a47aca9a979cbaa67a, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 5
+    spawnDayMax: 5
+    spawnCountDay: 0
+    spawnCountNight: 5
+    spawnIntervalMin: 3
+    spawnIntervalMax: 5
+--- !u!4 &388866137
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 388866135}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -8.49, y: 2.88, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &421701525 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 236527888167741895, guid: 688d43e834fb4e547a311bd6f265cad4, type: 3}
@@ -561,6 +742,92 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &471019300
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 471019302}
+  - component: {fileID: 471019301}
+  m_Layer: 0
+  m_Name: Spawner (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &471019301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471019300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6c12c3d21667a04b9158e49f94a31e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxEnemiesDay: 4
+  maxEnemiesNight: 10
+  maxDeadBodies: 10000
+  minSpawnTime: 2
+  maxSpawnTime: 7
+  spawnEntries:
+  - typeName: 1 night enemy
+    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 1
+    spawnDayMax: 1
+    spawnCountDay: 0
+    spawnCountNight: 2
+    spawnIntervalMin: 3
+    spawnIntervalMax: 13
+  - typeName: Boss guys
+    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 5
+    spawnDayMax: 5
+    spawnCountDay: 0
+    spawnCountNight: 5
+    spawnIntervalMin: 3
+    spawnIntervalMax: 10
+  - typeName: Boss shooters
+    prefab: {fileID: 7057109017575632913, guid: db795f5b8b9b913458631fcfb94793fb, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 5
+    spawnDayMax: 5
+    spawnCountDay: 0
+    spawnCountNight: 3
+    spawnIntervalMin: 3
+    spawnIntervalMax: 5
+  - typeName: 4 night shooters
+    prefab: {fileID: 7057109017575632913, guid: db795f5b8b9b913458631fcfb94793fb, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 4
+    spawnDayMax: 4
+    spawnCountDay: 0
+    spawnCountNight: 3
+    spawnIntervalMin: 3
+    spawnIntervalMax: 5
+--- !u!4 &471019302
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471019300}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.27, y: -5.71, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1033,6 +1300,101 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &966421170
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 966421172}
+  - component: {fileID: 966421171}
+  m_Layer: 0
+  m_Name: Spawner (6)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &966421171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 966421170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6c12c3d21667a04b9158e49f94a31e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxEnemiesDay: 4
+  maxEnemiesNight: 10
+  maxDeadBodies: 10000
+  minSpawnTime: 2
+  maxSpawnTime: 7
+  spawnEntries:
+  - typeName: 1 day enemy
+    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 1
+    spawnDayMax: 1
+    spawnCountDay: 0
+    spawnCountNight: 2
+    spawnIntervalMin: 3
+    spawnIntervalMax: 13
+  - typeName: 4 night enemies
+    prefab: {fileID: 7057109017575632913, guid: db795f5b8b9b913458631fcfb94793fb, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 4
+    spawnDayMax: 4
+    spawnCountDay: 0
+    spawnCountNight: 3
+    spawnIntervalMin: 3
+    spawnIntervalMax: 7
+  - typeName: 4 night shooters
+    prefab: {fileID: 7057109017575632913, guid: db795f5b8b9b913458631fcfb94793fb, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 4
+    spawnDayMax: 4
+    spawnCountDay: 0
+    spawnCountNight: 1
+    spawnIntervalMin: 3
+    spawnIntervalMax: 5
+  - typeName: Boss shooters
+    prefab: {fileID: 7057109017575632913, guid: db795f5b8b9b913458631fcfb94793fb, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 5
+    spawnDayMax: 5
+    spawnCountDay: 0
+    spawnCountNight: 3
+    spawnIntervalMin: 3
+    spawnIntervalMax: 5
+  - typeName: Boss enemies
+    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 5
+    spawnDayMax: 5
+    spawnCountDay: 0
+    spawnCountNight: 5
+    spawnIntervalMin: 3
+    spawnIntervalMax: 10
+--- !u!4 &966421172
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 966421170}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.44, y: 3.69, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1512,49 +1874,49 @@ MonoBehaviour:
   minSpawnTime: 2
   maxSpawnTime: 7
   spawnEntries:
-  - typeName: ogn
+  - typeName: tutor shooter
     prefab: {fileID: 7057109017575632913, guid: db795f5b8b9b913458631fcfb94793fb, type: 3}
     spawnEveryDay: 0
     spawnDayMin: 1
-    spawnDayMax: 4
+    spawnDayMax: 1
     spawnCountDay: 1
-    spawnCountNight: 1
+    spawnCountNight: 0
     spawnIntervalMin: 5
-    spawnIntervalMax: 7
-  - typeName: zub
-    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
-    spawnEveryDay: 0
-    spawnDayMin: 2
-    spawnDayMax: 4
-    spawnCountDay: 1
-    spawnCountNight: 1
-    spawnIntervalMin: 5
-    spawnIntervalMax: 7
-  - typeName: bmb
+    spawnIntervalMax: 5
+  - typeName: 3 day bomber
     prefab: {fileID: 7057109017575632913, guid: 26663e3377ed35a47aca9a979cbaa67a, type: 3}
     spawnEveryDay: 0
-    spawnDayMin: 2
-    spawnDayMax: 4
+    spawnDayMin: 3
+    spawnDayMax: 3
     spawnCountDay: 1
-    spawnCountNight: 2
-    spawnIntervalMin: 5
-    spawnIntervalMax: 7
-  - typeName: BOSS
-    prefab: {fileID: 7057109017575632913, guid: 984ecac7182054e4a85af53a987c7388, type: 3}
-    spawnEveryDay: 0
-    spawnDayMin: 0
-    spawnDayMax: 0
-    spawnCountDay: 0
     spawnCountNight: 0
     spawnIntervalMin: 3
     spawnIntervalMax: 5
-  - typeName: bombe
+  - typeName: 3 night bomber
     prefab: {fileID: 7057109017575632913, guid: 26663e3377ed35a47aca9a979cbaa67a, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 3
+    spawnDayMax: 3
+    spawnCountDay: 0
+    spawnCountNight: 3
+    spawnIntervalMin: 4
+    spawnIntervalMax: 8
+  - typeName: BOSS
+    prefab: {fileID: 7057109017575632913, guid: 984ecac7182054e4a85af53a987c7388, type: 3}
     spawnEveryDay: 0
     spawnDayMin: 5
     spawnDayMax: 5
-    spawnCountDay: 1
-    spawnCountNight: 5
+    spawnCountDay: 0
+    spawnCountNight: 1
+    spawnIntervalMin: 5
+    spawnIntervalMax: 7
+  - typeName: Boss shooters
+    prefab: {fileID: 7057109017575632913, guid: db795f5b8b9b913458631fcfb94793fb, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 5
+    spawnDayMax: 5
+    spawnCountDay: 0
+    spawnCountNight: 3
     spawnIntervalMin: 3
     spawnIntervalMax: 5
 --- !u!4 &1779884564
@@ -1566,13 +1928,13 @@ Transform:
   m_GameObject: {fileID: 1779884562}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.14, y: 1.06, z: 0}
+  m_LocalPosition: {x: -8.69, y: -1.87, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1973876914
+--- !u!1 &1870548251
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1580,8 +1942,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1973876916}
-  - component: {fileID: 1973876915}
+  - component: {fileID: 1870548253}
+  - component: {fileID: 1870548252}
   m_Layer: 0
   m_Name: Spawner (1)
   m_TagString: Untagged
@@ -1589,13 +1951,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1973876915
+--- !u!114 &1870548252
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1973876914}
+  m_GameObject: {fileID: 1870548251}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d6c12c3d21667a04b9158e49f94a31e8, type: 3}
@@ -1607,61 +1969,183 @@ MonoBehaviour:
   minSpawnTime: 2
   maxSpawnTime: 7
   spawnEntries:
-  - typeName: ogn
-    prefab: {fileID: 7057109017575632913, guid: db795f5b8b9b913458631fcfb94793fb, type: 3}
-    spawnEveryDay: 0
-    spawnDayMin: 2
-    spawnDayMax: 4
-    spawnCountDay: 1
-    spawnCountNight: 1
-    spawnIntervalMin: 5
-    spawnIntervalMax: 7
-  - typeName: zub
+  - typeName: Tutor enemy
     prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
     spawnEveryDay: 0
     spawnDayMin: 1
-    spawnDayMax: 4
+    spawnDayMax: 1
+    spawnCountDay: 1
+    spawnCountNight: 0
+    spawnIntervalMin: 10
+    spawnIntervalMax: 10
+  - typeName: 2 day shooters
+    prefab: {fileID: 7057109017575632913, guid: db795f5b8b9b913458631fcfb94793fb, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 2
+    spawnDayMax: 2
     spawnCountDay: 1
     spawnCountNight: 1
     spawnIntervalMin: 5
     spawnIntervalMax: 7
-  - typeName: bmb
-    prefab: {fileID: 7057109017575632913, guid: 26663e3377ed35a47aca9a979cbaa67a, type: 3}
+  - typeName: 2 night wave
+    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
     spawnEveryDay: 0
     spawnDayMin: 2
+    spawnDayMax: 2
+    spawnCountDay: 0
+    spawnCountNight: 3
+    spawnIntervalMin: 3
+    spawnIntervalMax: 5
+  - typeName: 3 night bombers
+    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 3
+    spawnDayMax: 3
+    spawnCountDay: 0
+    spawnCountNight: 3
+    spawnIntervalMin: 1
+    spawnIntervalMax: 5
+  - typeName: 4 day enemy
+    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 4
     spawnDayMax: 4
     spawnCountDay: 1
-    spawnCountNight: 2
-    spawnIntervalMin: 5
-    spawnIntervalMax: 7
-  - typeName: BOSS
-    prefab: {fileID: 7057109017575632913, guid: 984ecac7182054e4a85af53a987c7388, type: 3}
-    spawnEveryDay: 0
-    spawnDayMin: 0
-    spawnDayMax: 0
-    spawnCountDay: 0
     spawnCountNight: 0
-    spawnIntervalMin: 3
+    spawnIntervalMin: 1
     spawnIntervalMax: 5
-  - typeName: bombe
-    prefab: {fileID: 7057109017575632913, guid: 26663e3377ed35a47aca9a979cbaa67a, type: 3}
+  - typeName: 4 night enemies
+    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
     spawnEveryDay: 0
-    spawnDayMin: 5
-    spawnDayMax: 5
-    spawnCountDay: 1
+    spawnDayMin: 4
+    spawnDayMax: 4
+    spawnCountDay: 0
     spawnCountNight: 5
-    spawnIntervalMin: 3
-    spawnIntervalMax: 5
---- !u!4 &1973876916
+    spawnIntervalMin: 2
+    spawnIntervalMax: 9
+--- !u!4 &1870548253
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1973876914}
+  m_GameObject: {fileID: 1870548251}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.84, y: -3.22, z: 0}
+  m_LocalPosition: {x: -8.55, y: -5.75, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1960902610
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1960902612}
+  - component: {fileID: 1960902611}
+  m_Layer: 0
+  m_Name: Spawner (5)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1960902611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1960902610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6c12c3d21667a04b9158e49f94a31e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxEnemiesDay: 4
+  maxEnemiesNight: 10
+  maxDeadBodies: 10000
+  minSpawnTime: 2
+  maxSpawnTime: 7
+  spawnEntries:
+  - typeName: 1 night enemy
+    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 1
+    spawnDayMax: 1
+    spawnCountDay: 0
+    spawnCountNight: 2
+    spawnIntervalMin: 3
+    spawnIntervalMax: 13
+  - typeName: 3 night bombers
+    prefab: {fileID: 7057109017575632913, guid: 26663e3377ed35a47aca9a979cbaa67a, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 3
+    spawnDayMax: 3
+    spawnCountDay: 0
+    spawnCountNight: 3
+    spawnIntervalMin: 3
+    spawnIntervalMax: 10
+  - typeName: 4 day enemy
+    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 4
+    spawnDayMax: 4
+    spawnCountDay: 1
+    spawnCountNight: 0
+    spawnIntervalMin: 3
+    spawnIntervalMax: 5
+  - typeName: 4 nights enemy
+    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 4
+    spawnDayMax: 4
+    spawnCountDay: 0
+    spawnCountNight: 3
+    spawnIntervalMin: 3
+    spawnIntervalMax: 5
+  - typeName: 4 nights shooters
+    prefab: {fileID: 7057109017575632913, guid: db795f5b8b9b913458631fcfb94793fb, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 4
+    spawnDayMax: 4
+    spawnCountDay: 0
+    spawnCountNight: 2
+    spawnIntervalMin: 1
+    spawnIntervalMax: 10
+  - typeName: Boss bombers
+    prefab: {fileID: 7057109017575632913, guid: 26663e3377ed35a47aca9a979cbaa67a, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 5
+    spawnDayMax: 5
+    spawnCountDay: 0
+    spawnCountNight: 5
+    spawnIntervalMin: 3
+    spawnIntervalMax: 5
+  - typeName: Boss enemy
+    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 5
+    spawnDayMax: 5
+    spawnCountDay: 0
+    spawnCountNight: 5
+    spawnIntervalMin: 3
+    spawnIntervalMax: 10
+--- !u!4 &1960902612
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1960902610}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.53, y: 3.72, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1678,6 +2162,101 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1983255722
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1983255724}
+  - component: {fileID: 1983255723}
+  m_Layer: 0
+  m_Name: Spawner (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1983255723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1983255722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6c12c3d21667a04b9158e49f94a31e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxEnemiesDay: 4
+  maxEnemiesNight: 10
+  maxDeadBodies: 10000
+  minSpawnTime: 2
+  maxSpawnTime: 7
+  spawnEntries:
+  - typeName: 1 Night enemy
+    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 1
+    spawnDayMax: 1
+    spawnCountDay: 0
+    spawnCountNight: 2
+    spawnIntervalMin: 3
+    spawnIntervalMax: 13
+  - typeName: 2 night wave
+    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 2
+    spawnDayMax: 2
+    spawnCountDay: 0
+    spawnCountNight: 2
+    spawnIntervalMin: 3
+    spawnIntervalMax: 5
+  - typeName: 3 night bombers
+    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 3
+    spawnDayMax: 3
+    spawnCountDay: 0
+    spawnCountNight: 3
+    spawnIntervalMin: 5
+    spawnIntervalMax: 7
+  - typeName: 4 day enemy
+    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 4
+    spawnDayMax: 4
+    spawnCountDay: 1
+    spawnCountNight: 0
+    spawnIntervalMin: 5
+    spawnIntervalMax: 7
+  - typeName: Boss guys
+    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 5
+    spawnDayMax: 5
+    spawnCountDay: 0
+    spawnCountNight: 5
+    spawnIntervalMin: 3
+    spawnIntervalMax: 10
+--- !u!4 &1983255724
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1983255722}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.74, y: -5.78, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2012445717 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3501448166660570099, guid: 688d43e834fb4e547a311bd6f265cad4, type: 3}
@@ -2154,7 +2733,13 @@ SceneRoots:
   - {fileID: 885822381}
   - {fileID: 1080298673}
   - {fileID: 1779884564}
-  - {fileID: 1973876916}
+  - {fileID: 1870548253}
+  - {fileID: 471019302}
+  - {fileID: 1983255724}
+  - {fileID: 207823467}
+  - {fileID: 1960902612}
+  - {fileID: 966421172}
+  - {fileID: 388866137}
   - {fileID: 1614094894}
   - {fileID: 379432730}
   - {fileID: 1326910932}

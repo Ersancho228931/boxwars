@@ -217,7 +217,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 6
   fuseTime: 1.5
-  explosionRadius: 1.5
+  explosionRadius: 2
   explosionDamage: 50
   explosionSprite: {fileID: 21300000, guid: 99b3f9197f81c456d86b56559322dabe, type: 3}
   deadSprite: {fileID: 0}

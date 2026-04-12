@@ -102,8 +102,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: Player
-  speed: 3
-  damage: 70
+  speed: 4
+  damage: 55
   attackCooldown: 1
 --- !u!114 &8892513722615508895
 MonoBehaviour:
@@ -211,3 +211,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bossName: THE BOSS
+  bossSpawnSound: {fileID: 0}

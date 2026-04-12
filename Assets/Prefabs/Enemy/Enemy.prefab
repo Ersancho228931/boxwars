@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: Player
-  speed: 1.7
+  speed: 2
   damage: 10
   attackCooldown: 1
 --- !u!114 &8892513722615508895
@@ -118,7 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5847a973d97e1804596f8d842758554c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 30
   deadSprite: {fileID: 21300000, guid: cec978ed0e02f48dfb15b2af0f022aa7, type: 3}
   isDead: 0
   isConvertedToBlock: 0
