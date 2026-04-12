@@ -18,10 +18,37 @@ public class Projectile : MonoBehaviour
     {
         Destroy(gameObject, lifeTime);
     }
-
-    void OnTriggerEnter2D(Collider2D col)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        HandleHit(col?.gameObject);
+        EnemyHealth enemy = other.GetComponent<EnemyHealth>();
+
+        if (enemy != null)
+        {
+            // Alive enemy = damage
+            if (!enemy.isDead)
+            {
+                enemy.TakeDamage(damage);
+                Destroy(gameObject);
+                return;
+            }
+
+            // Dead wall = damage / break
+            if (enemy.isDead && enemy.isConvertedToBlock)
+            {
+                enemy.TakeDamage(damage);
+                Destroy(gameObject);
+                return;
+            }
+
+            // Dead body = ignore
+            if (enemy.isDead && !enemy.isConvertedToBlock)
+            {
+                return;
+            }
+        }
+
+        // hit anything else
+        Destroy(gameObject);
     }
 
     void OnCollisionEnter2D(Collision2D collision)
