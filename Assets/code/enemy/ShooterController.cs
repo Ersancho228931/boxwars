@@ -170,28 +170,16 @@ public class ShooterController : MonoBehaviour
 
     void HandleConvertedBlockBehavior()
     {
-        // Turrets can shoot at both player and other enemies
+        // Turrets only shoot at OTHER LIVE ENEMIES, not the player
+        var enemies = FindObjectsOfType<EnemyHealth>();
         Transform target = null;
         float closestDist = Mathf.Infinity;
 
-        // Check player distance first
-        if (player != null)
-        {
-            float playerDist = Vector2.Distance(transform.position, player.position);
-            if (playerDist < closestDist && playerDist <= convertedDetectionRange)
-            {
-                closestDist = playerDist;
-                target = player;
-            }
-        }
-
-        // Check other live enemies
-        var enemies = FindObjectsOfType<EnemyHealth>();
         foreach (var e in enemies)
         {
             if (e == null) continue;
-            if (e.gameObject == gameObject) continue;
-            if (e.isDead) continue;
+            if (e.gameObject == gameObject) continue;  // Skip self
+            if (e.isDead) continue;                     // Skip dead enemies
             float d = Vector2.Distance(transform.position, e.transform.position);
             if (d < closestDist && d <= convertedDetectionRange)
             {
@@ -207,7 +195,7 @@ public class ShooterController : MonoBehaviour
 
         if (Time.time > lastConvertedShotTime + shootingInterval)
         {
-            if (enableDebug) Debug.Log($"{gameObject.name} (converted) shooting at {target.name} (dist {closestDist:F2})");
+            if (enableDebug) Debug.Log($"{gameObject.name} (turret) shooting at {target.name} (dist {closestDist:F2})");
             Shoot((toTarget.sqrMagnitude > 0.0001f) ? toTarget.normalized : Vector2.up);
             lastConvertedShotTime = Time.time;
         }
