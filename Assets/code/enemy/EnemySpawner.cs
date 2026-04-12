@@ -9,16 +9,13 @@ public class EnemySpawner : MonoBehaviour
     {
         public string typeName;
         public GameObject prefab;
-
         [Header("Day range")]
         public bool spawnEveryDay = false;
         public int spawnDayMin = 1;
         public int spawnDayMax = 1;
-
         [Header("Counts")]
         public int spawnCountDay = 1;
         public int spawnCountNight = 0;
-
         [Header("Timing per entry")]
         public float spawnIntervalMin = 0.5f;
         public float spawnIntervalMax = 1.5f;
@@ -33,14 +30,13 @@ public class EnemySpawner : MonoBehaviour
     public float minSpawnTime = 2f;
     public float maxSpawnTime = 4f;
 
-    [Header("Spawn entries per level/day")]
     public List<SpawnEntry> spawnEntries = new List<SpawnEntry>();
 
     private int currentEnemies = 0;
     private List<GameObject> deadBodies = new List<GameObject>();
-
     private int lastDay = -1;
     private bool lastIsDay = false;
+    private bool hasClearedNight5Bodies = false;
 
     void Start()
     {
@@ -67,13 +63,10 @@ public class EnemySpawner : MonoBehaviour
                 int day = DayNightManager.instance.GetDay();
                 bool isDay = DayNightManager.instance.IsDay();
 
-                // detect phase change (day/night) or new day
                 if (day != lastDay || isDay != lastIsDay)
                 {
-                    // store the new state after handling
                     int prevDay = lastDay;
                     bool prevIsDay = lastIsDay;
-
                     lastDay = day;
                     lastIsDay = isDay;
 
@@ -88,30 +81,39 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    void OnDayStart(int day)
+    void OnNightStart(int day)
     {
+        // NEW: Clear dead bodies on Night 5 if option enabled
+        if (day >= 5 && DayNightManager.instance != null && DayNightManager.instance.clearDeadBodiesOnNight5)
+        {
+            if (!hasClearedNight5Bodies)
+            {
+                ClearAllDeadBodies();
+                hasClearedNight5Bodies = true;
+                Debug.Log("Night 5 Forever Night - All dead bodies cleared.");
+            }
+        }
+
         foreach (var entry in spawnEntries)
         {
             if (entry == null || entry.prefab == null) continue;
-
             if (entry.spawnEveryDay || (day >= entry.spawnDayMin && day <= entry.spawnDayMax))
             {
-                int count = Mathf.Max(0, entry.spawnCountDay);
+                int count = Mathf.Max(0, entry.spawnCountNight);
                 if (count > 0)
                     StartCoroutine(SpawnEntryRoutine(entry, count));
             }
         }
     }
 
-    void OnNightStart(int day)
+    void OnDayStart(int day)
     {
         foreach (var entry in spawnEntries)
         {
             if (entry == null || entry.prefab == null) continue;
-
             if (entry.spawnEveryDay || (day >= entry.spawnDayMin && day <= entry.spawnDayMax))
             {
-                int count = Mathf.Max(0, entry.spawnCountNight);
+                int count = Mathf.Max(0, entry.spawnCountDay);
                 if (count > 0)
                     StartCoroutine(SpawnEntryRoutine(entry, count));
             }
@@ -138,11 +140,8 @@ public class EnemySpawner : MonoBehaviour
             if (currentEnemies < ((DayNightManager.instance != null && DayNightManager.instance.IsDay()) ? maxEnemiesDay : maxEnemiesNight))
             {
                 GameObject e = Instantiate(entry.prefab, transform.position, Quaternion.identity);
-                // ensure prefab's intended localScale (fixes spawn-time unexpected scaling)
                 e.transform.localScale = prefabScale;
-                // ensure top-level in hierarchy so parent scale doesn't modify it
                 e.transform.SetParent(null);
-
                 currentEnemies++;
 
                 EnemyHealth eh = e.GetComponent<EnemyHealth>();
@@ -151,14 +150,11 @@ public class EnemySpawner : MonoBehaviour
                     eh.OnDeath += () =>
                     {
                         currentEnemies--;
-
                         deadBodies.Add(e);
-
                         if (deadBodies.Count > maxDeadBodies)
                         {
                             if (deadBodies[0] != null)
                                 Destroy(deadBodies[0]);
-
                             deadBodies.RemoveAt(0);
                         }
                     };
@@ -176,5 +172,15 @@ public class EnemySpawner : MonoBehaviour
         maxEnemiesDay += 1;
         maxEnemiesNight += 2;
         maxDeadBodies += 2;
+    }
+
+    public void ClearAllDeadBodies()
+    {
+        for (int i = deadBodies.Count - 1; i >= 0; i--)
+        {
+            if (deadBodies[i] != null)
+                Destroy(deadBodies[i]);
+        }
+        deadBodies.Clear();
     }
 }

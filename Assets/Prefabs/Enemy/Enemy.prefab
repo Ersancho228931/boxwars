@@ -103,9 +103,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: Player
-  speed: 3
+  speed: 1.7
   damage: 10
-  attackCooldown: 1
+  attackCooldown: 2
 --- !u!114 &8892513722615508895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139,7 +139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dea9994dc8fce24491b1821f4b0a8f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 60
+  maxHealth: 50
 --- !u!50 &3924055008892620813
 Rigidbody2D:
   serializedVersion: 4

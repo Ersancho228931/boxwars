@@ -14,7 +14,6 @@ public class Block : MonoBehaviour
     public void TakeDamage(int dmg)
     {
         currentHealth -= dmg;
-
         if (currentHealth <= 0)
         {
             Destroy(gameObject);

@@ -51,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (footstepTimer <= 0)
             {
-                AudioManager.Instance.PlayWalk(false, 0.4f);
+                AudioManager.Instance.PlayWalk(false, 2f);
                 footstepTimer = footstepInterval;
             }
             footstepTimer -= Time.deltaTime;
@@ -71,7 +71,7 @@ public class PlayerMovement : MonoBehaviour
         if (sr == null) return;
 
         if (horizontalInput > 0.1f)
-            sr.flipX = true;   // moving right 
+            sr.flipX = true;   // moving right  
         else if (horizontalInput < -0.1f)
             sr.flipX = false;    // moving left
     }

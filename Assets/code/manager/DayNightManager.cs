@@ -1,24 +1,23 @@
-﻿using UnityEngine;
-using TMPro;
+﻿using TMPro;
+using UnityEngine;
 
 public class DayNightManager : MonoBehaviour
 {
     public float dayDuration = 45f;
     public float nightDuration = 30f;
-
     public TMP_Text infoText;
-    public GameObject nightOverlay; // drag UI image here
+    public GameObject nightOverlay;
+
+    [Header("Night 5 Cleanup")]
+    public bool clearDeadBodiesOnNight5 = true;   // ← Toggle this in Inspector
 
     private float timer;
     private bool isDay = true;
     private int dayCount = 1;
-
     public static DayNightManager instance;
 
     void Awake()
     {
-        // If an instance already exists and it's not this one, destroy the old reference
-        // or just overwrite it. This ensures "respawn" always uses the NEW manager.
         instance = this;
     }
 
@@ -30,14 +29,12 @@ public class DayNightManager : MonoBehaviour
 
     void Update()
     {
-        // 🌑 Check if it is Night 5. If it is, we stop the timer so it never turns Day.
         if (!isDay && dayCount >= 5)
         {
-            return; // Exit Update early, stopping the countdown
+            return; // Forever night - stop timer
         }
 
         timer -= Time.deltaTime;
-
         if (timer <= 0)
         {
             SwitchPhase();
@@ -46,8 +43,7 @@ public class DayNightManager : MonoBehaviour
 
     void SwitchPhase()
     {
-        if (AudioManager.Instance != null)
-    AudioManager.Instance.PlayOneShot(AudioManager.Instance.dayNightChange, 1.5f);
+        AudioManager.Instance.PlayOneShot(AudioManager.Instance.dayNightChange, 1.5f);
         isDay = !isDay;
 
         if (isDay)
@@ -55,12 +51,9 @@ public class DayNightManager : MonoBehaviour
             dayCount++;
             timer = dayDuration;
 
-            // Make sure EnemySpawner exists before calling
             EnemySpawner spawner = FindObjectOfType<EnemySpawner>();
             if (spawner != null)
-            {
                 spawner.IncreaseDifficulty(dayCount);
-            }
         }
         else
         {
@@ -74,7 +67,6 @@ public class DayNightManager : MonoBehaviour
     {
         string phase = isDay ? "DAY" : "NIGHT";
 
-        // Custom text for the final forever night
         if (!isDay && dayCount >= 5)
         {
             infoText.text = "Day: " + dayCount + "\nFOREVER NIGHT";
@@ -88,13 +80,6 @@ public class DayNightManager : MonoBehaviour
             nightOverlay.SetActive(!isDay);
     }
 
-    public bool IsDay()
-    {
-        return isDay;
-    }
-
-    public int GetDay()
-    {
-        return dayCount;
-    }
+    public bool IsDay() => isDay;
+    public int GetDay() => dayCount;
 }

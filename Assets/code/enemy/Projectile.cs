@@ -6,7 +6,6 @@ public class Projectile : MonoBehaviour
     public int damage = 20;
     public float lifeTime = 5f;
     public GameObject owner;
-
     public bool ignoreCarrierPlayer = false;
     public bool allowPlayerDamage = true;
     public string[] allowedTargetNames;
@@ -30,142 +29,74 @@ public class Projectile : MonoBehaviour
         HandleHit(collision?.gameObject);
     }
 
-    bool NameMatchesFilter(string objName)
-    {
-        if (allowedTargetNames == null || allowedTargetNames.Length == 0) return true;
-        if (string.IsNullOrEmpty(objName)) return false;
-
-        foreach (var f in allowedTargetNames)
-        {
-            if (string.IsNullOrEmpty(f)) continue;
-            if (objName == f) return true;
-            if (objName.Contains(f)) return true;
-        }
-        return false;
-    }
-
-    bool TagMatchesFilter(string tag)
-    {
-        if (allowedTargetTags == null || allowedTargetTags.Length == 0) return true;
-        if (string.IsNullOrEmpty(tag)) return false;
-        foreach (var t in allowedTargetTags)
-        {
-            if (string.IsNullOrEmpty(t)) continue;
-            if (tag == t) return true;
-        }
-        return false;
-    }
-
-    bool HitIsCarrierOfOwner(GameObject hit)
-    {
-        if (owner == null || hit == null) return false;
-        return owner.transform.IsChildOf(hit.transform);
-    }
-
     void HandleHit(GameObject hit)
     {
         if (hit == null) return;
 
-        if (enableDebug) Debug.Log($"Projectile.HandleHit: {name} hit {hit.name}");
+        // Allow carried shooter (even when converted) to damage enemies
+        bool isCarriedShooter = owner != null && owner.GetComponent<ShooterController>() != null
+                                && owner.GetComponent<ShooterController>().IsCarried();
 
-        if (owner != null)
+        // Enemy projectile that can break walls
+        bool isEnemyProjectile = owner != null && owner.GetComponent<EnemyHealth>() != null
+                                 && !isCarriedShooter;
+
+        // Break walls with enemy shots
+        if (isEnemyProjectile)
         {
-            if (hit == owner)
+            Block block = hit.GetComponent<Block>() ?? hit.GetComponentInParent<Block>();
+            if (block != null)
             {
-                if (enableDebug) Debug.Log("Projectile: hit owner -> ignore");
-                return;
-            }
-
-            if (hit.transform.IsChildOf(owner.transform))
-            {
-                if (enableDebug) Debug.Log("Projectile: hit child of owner -> ignore");
-                return;
-            }
-
-            if (HitIsCarrierOfOwner(hit))
-            {
-                if (enableDebug) Debug.Log("Projectile: hit is carrier of owner -> ignore");
+                block.TakeDamage(damage);
+                Destroy(gameObject);
                 return;
             }
         }
 
-        // Enemy: search in parents too
-        var eh = hit.GetComponent<EnemyHealth>();
-        if (eh == null)
-            eh = hit.GetComponentInParent<EnemyHealth>();
+        // Original damage logic
+        if (owner != null)
+        {
+            if (hit == owner || hit.transform.IsChildOf(owner.transform))
+                return;
+        }
 
+        var eh = hit.GetComponent<EnemyHealth>() ?? hit.GetComponentInParent<EnemyHealth>();
         if (eh != null)
         {
-            // if projectile was fired by an enemy (owner has EnemyHealth) and owner is NOT converted/block nor carried shooter => block friendly fire
-            var ownerEh = owner != null ? owner.GetComponent<EnemyHealth>() : null;
-            var ownerShooter = owner != null ? owner.GetComponent<ShooterController>() : null;
-            bool ownerIsEnemy = ownerEh != null;
-
-            bool ownerConvertedOrCarriedShooter = false;
-            if (ownerEh != null && ownerEh.isConvertedToBlock) ownerConvertedOrCarriedShooter = true;
-            if (ownerShooter != null && ownerShooter.IsCarried()) ownerConvertedOrCarriedShooter = true;
-
-            if (ownerIsEnemy && !ownerConvertedOrCarriedShooter)
+            // Allow carried shooter to damage other enemies (important fix)
+            if (isCarriedShooter)
             {
-                // enemy fired and not converted/carried => do not damage other enemies
-                if (enableDebug) Debug.Log("Projectile: friendly fire prevented -> destroy projectile");
+                eh.TakeDamage(damage);
                 Destroy(gameObject);
                 return;
             }
 
-            // tag/name filters apply to the root object of the EnemyHealth
-            if (allowedTargetTags != null && allowedTargetTags.Length > 0)
+            // Normal enemy friendly fire prevention
+            var ownerEh = owner != null ? owner.GetComponent<EnemyHealth>() : null;
+            if (ownerEh != null && !ownerEh.isConvertedToBlock)
             {
-                if (!TagMatchesFilter(eh.gameObject.tag))
-                {
-                    if (enableDebug) Debug.Log($"Projectile: enemy {eh.gameObject.name} tag '{eh.gameObject.tag}' not allowed -> destroy projectile");
-                    Destroy(gameObject);
-                    return;
-                }
+                Destroy(gameObject);
+                return;
             }
 
-            if (allowedTargetNames != null && allowedTargetNames.Length > 0)
-            {
-                if (!NameMatchesFilter(eh.gameObject.name))
-                {
-                    if (enableDebug) Debug.Log($"Projectile: enemy {eh.gameObject.name} name not allowed -> destroy projectile");
-                    Destroy(gameObject);
-                    return;
-                }
-            }
-
-            if (enableDebug) Debug.Log($"Projectile: dealing {damage} to enemy {eh.gameObject.name}");
             eh.TakeDamage(damage);
             Destroy(gameObject);
             return;
         }
 
-        // Player
+        // Player damage
         if (hit.CompareTag("Player"))
         {
-            if (!allowPlayerDamage)
-            {
-                if (enableDebug) Debug.Log("Projectile: player hit but allowPlayerDamage == false -> ignore");
-                return;
-            }
-
-            if (ignoreCarrierPlayer && HitIsCarrierOfOwner(hit))
-            {
-                if (enableDebug) Debug.Log("Projectile: hit is carrier of owner and ignoreCarrierPlayer == true -> ignore");
-                return;
-            }
-
+            if (!allowPlayerDamage) return;
             var ph = hit.GetComponent<PlayerHealth>();
             if (ph != null)
             {
-                if (enableDebug) Debug.Log($"Projectile: dealing {damage} to player {hit.name}");
                 ph.TakeDamage(damage);
                 Destroy(gameObject);
                 return;
             }
         }
 
-        if (enableDebug) Debug.Log("Projectile: hit environment -> destroy");
         Destroy(gameObject);
     }
 }
