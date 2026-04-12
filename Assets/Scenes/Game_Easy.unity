@@ -1938,23 +1938,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4812625794360740603, guid: 688d43e834fb4e547a311bd6f265cad4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4812625794360740603, guid: 688d43e834fb4e547a311bd6f265cad4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 381094082}
+      objectReference: {fileID: 1326910931}
     - target: {fileID: 4812625794360740603, guid: 688d43e834fb4e547a311bd6f265cad4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4812625794360740603, guid: 688d43e834fb4e547a311bd6f265cad4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LoadSceneIndex
+      value: Restart
       objectReference: {fileID: 0}
     - target: {fileID: 4812625794360740603, guid: 688d43e834fb4e547a311bd6f265cad4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: MenuController, Assembly-CSharp
+      value: UIManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4812625794360740603, guid: 688d43e834fb4e547a311bd6f265cad4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
