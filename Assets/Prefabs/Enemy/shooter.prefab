@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5847a973d97e1804596f8d842758554c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 50
   deadSprite: {fileID: 21300000, guid: 9db8d80f27d64462ba094c7cee361f86, type: 3}
   isDead: 0
   isConvertedToBlock: 0
@@ -110,6 +110,7 @@ MonoBehaviour:
   bossName: THEBOSS
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
   damageFlashDuration: 0.12
+  dayDeathDuration: 6.5
 --- !u!50 &3924055008892620813
 Rigidbody2D:
   serializedVersion: 4
@@ -236,4 +237,5 @@ MonoBehaviour:
   onlyTargetTags: 0
   targetTagFilters:
   - 
+  spawnInvisibilityDuration: 0.1
   enableDebug: 1
