@@ -55,7 +55,7 @@ public class BomberController : MonoBehaviour
         if (exploded) return;
         exploded = true;
 
-        // ������������� ���� ������ ����� AudioManager ��� ��������, ���� ��������
+        // Проигрываем звук взрыва
         if (AudioManager.Instance != null)
         {
             if (explosionSound != null)
@@ -67,14 +67,13 @@ public class BomberController : MonoBehaviour
         {
             if (explosionSound != null)
             {
-                // ���� AudioManager ����������� � ����������� ��������� ��������
                 var temp = gameObject.AddComponent<AudioSource>();
                 temp.PlayOneShot(explosionSound, explosionVolume);
                 Destroy(temp, explosionSound.length + 0.1f);
             }
         }
 
-        // ��������� ���� ���
+        // Наносим урон объектам
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, explosionRadius);
         foreach (var c in hits)
         {
@@ -92,19 +91,17 @@ public class BomberController : MonoBehaviour
             }
         }
 
-        // ����� ������� �� ��������
+        // Показать спрайт взрыва
         if (explosionSprite != null && sr != null) sr.sprite = explosionSprite;
 
-        // ���������� �������� ������ 0.5 �������, ����� ���������� ������
+        // Спрайт взрыва исчезает через 0.3 секунды, а объект удаляется через 0.5 секунды
         Invoke(nameof(DestroySelf), 0.5f);
     }
 
     void DestroySelf()
     {
-        // ��� ������������� ����� ��������� �������������� ������� �����
-        // Leave the corpse visible instead of destroying immediately
-        // Destroy after delay - EnemySpawner will handle corpse cleanup
-        Destroy(gameObject, 3f);
+        // Удаляем объект сразу
+        Destroy(gameObject);
     }
 
     void OnDrawGizmosSelected()

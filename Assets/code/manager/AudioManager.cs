@@ -51,5 +51,11 @@ public class AudioManager : MonoBehaviour
             walkSource.Stop();
     }
 
+    public void StopAllAudio()
+    {
+        if (sfxSource != null) sfxSource.Stop();
+        if (walkSource != null) walkSource.Stop();
+    }
+
     public void PlayBossSpawn() => PlayOneShot(bossSpawn, 1f);
 }

@@ -18,7 +18,7 @@ public class PlayerHealth : MonoBehaviour
     public Sprite deadSprite;        // 0
 
     [Header("Damage visual")]
-    public Color damageFlashColor = Color.white;
+    public Color damageFlashColor = Color.red;
     public float flashDuration = 0.12f;
 
     [Header("Sound")]

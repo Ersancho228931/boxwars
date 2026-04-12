@@ -53,33 +53,44 @@ public class EnemyFollow : MonoBehaviour
 
         if (Time.time < lastAttackTime + attackCooldown) return;
 
-        // Игнорируем другие живые враги — но НЕ игнорируем конвертированные в блок объекты
-        EnemyHealth eh = collision.gameObject.GetComponent<EnemyHealth>();
-        if (eh != null && !eh.isConvertedToBlock) return;
-
         // 🧍 Player
         if (collision.gameObject.CompareTag("Player"))
         {
             PlayerHealth health = collision.gameObject.GetComponent<PlayerHealth>();
-
             if (health != null)
             {
                 health.TakeDamage(damage);
                 lastAttackTime = Time.time;
             }
+            return;
         }
 
-        // 🧱 Wall
+        // 🧱 Блоки и трупы врагов
+        // Сначала проверяем Block (прямой удар по трупу)
         Block block = collision.gameObject.GetComponent<Block>();
-
         if (block != null)
         {
             block.TakeDamage(damage);
             lastAttackTime = Time.time;
-
             if (anim != null) anim.SetBool("brk", true);
             AudioManager.Instance.PlayOneShot(AudioManager.Instance.enemyBreak);
+            return;
         }
+
+        // Проверяем мертвого врага (у которого есть EnemyHealth)
+        EnemyHealth eh = collision.gameObject.GetComponent<EnemyHealth>();
+        if (eh != null && eh.isDead)
+        {
+            // Это мертвый враг - ломаем его
+            eh.TakeDamage(damage);
+            lastAttackTime = Time.time;
+            if (anim != null) anim.SetBool("brk", true);
+            AudioManager.Instance.PlayOneShot(AudioManager.Instance.enemyBreak);
+            return;
+        }
+
+        // Пропускаем живых врагов
+        if (eh != null && !eh.isDead) return;
     }
 
     void OnCollisionExit2D(Collision2D collision)

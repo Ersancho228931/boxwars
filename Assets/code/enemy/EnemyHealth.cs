@@ -26,6 +26,9 @@ public class EnemyHealth : MonoBehaviour
     private Color originalColor;
     private Coroutine flashRoutine;
 
+    [Header("Day damage (slow death)")]
+    public float dayDeathDuration = 6.5f;  // Враги помрут за 6.5 секунд утром
+
     void Start()
     {
         currentHealth = maxHealth;

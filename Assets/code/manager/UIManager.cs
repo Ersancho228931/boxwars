@@ -40,6 +40,10 @@ public class UIManager : MonoBehaviour
         if (winSound != null && AudioManager.Instance != null)
             AudioManager.Instance.PlayOneShot(winSound);
 
+        // Fade out all other audio over 3 seconds, then stop
+        if (AudioManager.Instance != null)
+            yield return StartCoroutine(FadeOutAudio(3f));
+
         yield return new WaitForSeconds(2f);
 
         if (hud != null) hud.SetActive(false);
@@ -48,11 +52,43 @@ public class UIManager : MonoBehaviour
         HideBoss();
     }
 
+    private System.Collections.IEnumerator FadeOutAudio(float duration)
+    {
+        if (AudioManager.Instance == null) yield break;
+        
+        float elapsed = 0f;
+        AudioSource sfxSource = AudioManager.Instance.sfxSource;
+        
+        if (sfxSource == null) yield break;
+        
+        float startVolume = sfxSource.volume;
+        
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            sfxSource.volume = Mathf.Lerp(startVolume, 0f, elapsed / duration);
+            yield return null;
+        }
+        
+        // Stop all audio
+        sfxSource.volume = startVolume;  // Reset for next scene
+        AudioManager.Instance.StopAllAudio();
+    }
+
     public void ShowLose()
     {
         // Play lose sound
         if (loseSound != null && AudioManager.Instance != null)
             AudioManager.Instance.PlayOneShot(loseSound);
+
+        StartCoroutine(LoseSequence());
+    }
+
+    private System.Collections.IEnumerator LoseSequence()
+    {
+        // Fade out audio over 3 seconds
+        if (AudioManager.Instance != null)
+            yield return StartCoroutine(FadeOutAudio(3f));
 
         if (hud != null) hud.SetActive(false);
         if (loseScreen != null) loseScreen.SetActive(true);

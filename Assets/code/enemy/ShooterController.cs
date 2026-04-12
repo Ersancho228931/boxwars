@@ -28,6 +28,9 @@ public class ShooterController : MonoBehaviour
     public bool onlyTargetTags = false;
     public string[] targetTagFilters;
 
+    [Header("Spawn invisibility")]
+    public float spawnInvisibilityDuration = 0.1f;  // Время невидимости при спауне (секунды)
+
     [Header("Debug")]
     public bool enableDebug = false;
 
@@ -64,8 +67,21 @@ public class ShooterController : MonoBehaviour
         var p = GameObject.FindWithTag("Player");
         if (p != null) player = p.transform;
 
+        // Сделать невидимым при спауне
+        if (sr != null && spawnInvisibilityDuration > 0)
+        {
+            StartCoroutine(InvisibilityCoroutine());
+        }
+
         if (enableDebug)
             Debug.Log($"ShooterController.Start on {gameObject.name} — projectilePrefab is {(projectilePrefab != null ? "assigned" : "NULL")}");
+    }
+
+    private System.Collections.IEnumerator InvisibilityCoroutine()
+    {
+        sr.enabled = false;
+        yield return new WaitForSeconds(spawnInvisibilityDuration);
+        sr.enabled = true;
     }
 
     void Update()

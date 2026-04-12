@@ -394,14 +394,27 @@ public class PlayerCarry : MonoBehaviour
         var col = obj.GetComponent<Collider2D>();
         if (col != null) col.enabled = true;
 
-        // If it's a block / converted wall
-        var block = obj.GetComponent<Block>();
+        // If it's a dead shooter that needs to be converted to turret on drop
         var eh = obj.GetComponent<EnemyHealth>();
+        var shooter = obj.GetComponent<ShooterController>();
+        if (eh != null && eh.isDead && shooter != null && !eh.isConvertedToBlock)
+        {
+            eh.ConvertToBlock();  // Конвертируем в турель при бросании
+        }
+
+        // If it's a block / converted wall (turret)
+        var block = obj.GetComponent<Block>();
         if (block != null || (eh != null && eh.isConvertedToBlock))
         {
             if (block != null) block.enabled = true;
-            if (rb != null) rb.bodyType = RigidbodyType2D.Static;
+            if (eh != null) eh.isConvertedToBlock = true;  // Переустанавливаем флаг турели
+            if (rb != null) rb.bodyType = RigidbodyType2D.Kinematic;  // Kinematic для турели!
             obj.layer = wallLayerId >= 0 ? wallLayerId : 0;
+        }
+        else
+        {
+            // Обычный мертвый враг - Dynamic для падения
+            if (rb != null) rb.bodyType = RigidbodyType2D.Dynamic;
         }
 
         carriedObjects[index] = swappedIn;
