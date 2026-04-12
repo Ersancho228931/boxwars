@@ -71,14 +71,16 @@ public class Projectile : MonoBehaviour
                 return;
             }
 
-            // Normal enemy friendly fire prevention
+            // Friendly fire prevention: живые враги не атакуют живых врагов
+            // НО конвертированные в блоки турели МОГУТ атаковать врагов
             var ownerEh = owner != null ? owner.GetComponent<EnemyHealth>() : null;
-            if (ownerEh != null && !ownerEh.isConvertedToBlock)
+            if (ownerEh != null && !ownerEh.isDead)  // Только живые враги не атакуют друг друга
             {
                 Destroy(gameObject);
                 return;
             }
 
+            // Если это турель (мертвая и конвертирована) или другой projectile - наносим урон
             eh.TakeDamage(damage);
             Destroy(gameObject);
             return;

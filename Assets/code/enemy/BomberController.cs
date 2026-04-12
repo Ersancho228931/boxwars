@@ -78,6 +78,7 @@ public class BomberController : MonoBehaviour
         foreach (var c in hits)
         {
             if (c == null) continue;
+            
             var ph = c.GetComponent<PlayerHealth>();
             if (ph != null)
             {
@@ -89,13 +90,19 @@ public class BomberController : MonoBehaviour
             {
                 eh.TakeDamage(explosionDamage);
             }
+
+            var block = c.GetComponent<Block>();
+            if (block != null)
+            {
+                block.TakeDamage(explosionDamage);
+            }
         }
 
         // Показать спрайт взрыва
         if (explosionSprite != null && sr != null) sr.sprite = explosionSprite;
 
         // Спрайт взрыва исчезает через 0.3 секунды, а объект удаляется через 0.5 секунды
-        Invoke(nameof(DestroySelf), 0.5f);
+        Invoke(nameof(DestroySelf), 0.3f);
     }
 
     void DestroySelf()

@@ -159,7 +159,7 @@ public class EnemySpawner : MonoBehaviour
                             deadBodies.RemoveAt(0);
                             // Destroy old bodies only after a delay to avoid sudden disappearing
                             if (oldBody != null)
-                                Destroy(oldBody, 5f);
+                                Destroy(oldBody, 10f);  // Увеличено с 5f до 10f
                         }
                     };
                 }

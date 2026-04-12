@@ -53,6 +53,10 @@ public class EnemyFollow : MonoBehaviour
 
         if (Time.time < lastAttackTime + attackCooldown) return;
 
+        // Пропускаем живых врагов - они не должны атаковать друг друга
+        EnemyHealth targetEnemyHealth = collision.gameObject.GetComponent<EnemyHealth>();
+        if (targetEnemyHealth != null && !targetEnemyHealth.isDead) return;
+
         // 🧍 Player
         if (collision.gameObject.CompareTag("Player"))
         {
@@ -78,19 +82,15 @@ public class EnemyFollow : MonoBehaviour
         }
 
         // Проверяем мертвого врага (у которого есть EnemyHealth)
-        EnemyHealth eh = collision.gameObject.GetComponent<EnemyHealth>();
-        if (eh != null && eh.isDead)
+        if (targetEnemyHealth != null && targetEnemyHealth.isDead)
         {
             // Это мертвый враг - ломаем его
-            eh.TakeDamage(damage);
+            targetEnemyHealth.TakeDamage(damage);
             lastAttackTime = Time.time;
             if (anim != null) anim.SetBool("brk", true);
             AudioManager.Instance.PlayOneShot(AudioManager.Instance.enemyBreak);
             return;
         }
-
-        // Пропускаем живых врагов
-        if (eh != null && !eh.isDead) return;
     }
 
     void OnCollisionExit2D(Collision2D collision)
