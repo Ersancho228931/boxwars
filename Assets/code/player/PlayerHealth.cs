@@ -12,8 +12,9 @@ public class PlayerHealth : MonoBehaviour
 
     [Header("Sprites")]
     public Sprite normalSprite;
-    public Sprite damagedSprite;     // <50
-    public Sprite almostDeadSprite;  // <20
+    public Sprite damagedSprite;     // <100
+    public Sprite damagedSprite2;     // <61
+    public Sprite almostDeadSprite;  // <31
     public Sprite deadSprite;        // 0
 
     [Header("Damage visual")]
@@ -119,8 +120,9 @@ public class PlayerHealth : MonoBehaviour
     {
         if (sr == null) return;
         if (currentHealth <= 0) { if (deadSprite != null) sr.sprite = deadSprite; return; }
-        if (currentHealth < 20) { if (almostDeadSprite != null) sr.sprite = almostDeadSprite; return; }
-        if (currentHealth < 50) { if (damagedSprite != null) sr.sprite = damagedSprite; return; }
+        if (currentHealth < 31) { if (almostDeadSprite != null) sr.sprite = almostDeadSprite; return; }
+        if (currentHealth < 61) { if (damagedSprite2 != null) sr.sprite = damagedSprite2; return; }
+        if (currentHealth < 100) { if (damagedSprite != null) sr.sprite = damagedSprite; return; }
         if (normalSprite != null) sr.sprite = normalSprite;
     }
 

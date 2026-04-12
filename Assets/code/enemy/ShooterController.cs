@@ -38,11 +38,27 @@ public class ShooterController : MonoBehaviour
     private float lastConvertedShotTime = -999f;
     private Camera mainCam;
     private SpriteRenderer sr;
+    private Animator animator;
+
+    private Vector2 fixedVelocity = Vector2.zero;
+    private float fixedRotation = 0f;
+    private bool fixedHasRotation = false;
 
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        if (rb != null)
+        {
+            rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+            fixedRotation = rb.rotation;
+        }
+        if (animator != null)
+        {
+            animator.updateMode = AnimatorUpdateMode.AnimatePhysics;
+            animator.applyRootMotion = false;
+        }
         enemyHealth = GetComponent<EnemyHealth>();
         mainCam = Camera.main;
         var p = GameObject.FindWithTag("Player");
@@ -59,6 +75,32 @@ public class ShooterController : MonoBehaviour
             HandleCarried();
         else
             HandleAI();
+    }
+
+    void FixedUpdate()
+    {
+        if (rb == null) return;
+
+        if (rb.bodyType != RigidbodyType2D.Static)
+        {
+            if (fixedVelocity.sqrMagnitude > 0.0001f)
+            {
+                rb.MovePosition(rb.position + fixedVelocity * Time.fixedDeltaTime);
+                rb.velocity = fixedVelocity;
+            }
+            else
+            {
+                rb.velocity = Vector2.zero;
+            }
+        }
+
+        if (fixedHasRotation)
+        {
+            float step = rotateSpeed * Time.fixedDeltaTime;
+            float targetRotation = Mathf.MoveTowardsAngle(rb.rotation, fixedRotation, step);
+            rb.MoveRotation(targetRotation);
+        }
+        fixedHasRotation = false;
     }
 
     public bool IsCarried()
@@ -81,27 +123,31 @@ public class ShooterController : MonoBehaviour
 
         if (enemyHealth != null && enemyHealth.isDead)
         {
-            if (rb != null && rb.bodyType != RigidbodyType2D.Static) rb.velocity = Vector2.zero;
+            if (rb != null && rb.bodyType != RigidbodyType2D.Static) fixedVelocity = Vector2.zero;
             return;
         }
 
-        Vector2 toPlayer = (player.position - transform.position);
+        Vector2 currentPos = rb != null ? rb.position : (Vector2)transform.position;
+        Vector2 toPlayer = ((Vector2)player.position - currentPos);
         float dist = toPlayer.magnitude;
 
-        if (dist > 1.2f)
+        if (rb != null && rb.bodyType != RigidbodyType2D.Static)
         {
-            if (rb != null && rb.bodyType != RigidbodyType2D.Static) rb.velocity = toPlayer.normalized * moveSpeed;
+            if (dist > 1.2f)
+                fixedVelocity = toPlayer.normalized * moveSpeed;
+            else
+                fixedVelocity = Vector2.zero;
         }
         else
         {
-            if (rb != null && rb.bodyType != RigidbodyType2D.Static) rb.velocity = Vector2.zero;
+            fixedVelocity = Vector2.zero;
         }
 
         if (toPlayer.sqrMagnitude > 0.0001f)
         {
             float angle = Mathf.Atan2(toPlayer.y, toPlayer.x) * Mathf.Rad2Deg - 90f;
-            float step = rotateSpeed * Time.deltaTime;
-            if (rb != null) rb.rotation = Mathf.MoveTowardsAngle(rb.rotation, angle, step);
+            fixedRotation = angle;
+            fixedHasRotation = true;
             HandleFlip(toPlayer);
         }
 
@@ -134,18 +180,22 @@ public class ShooterController : MonoBehaviour
 
         if (best == null)
         {
-            if (rb != null && rb.bodyType != RigidbodyType2D.Static) rb.velocity = Vector2.zero;
+            if (rb != null && rb.bodyType != RigidbodyType2D.Static) fixedVelocity = Vector2.zero;
             return;
         }
 
-        Vector2 toTarget = (best.position - transform.position);
+        Vector2 currentPos = rb != null ? rb.position : (Vector2)transform.position;
+        Vector2 toTarget = ((Vector2)best.position - currentPos);
         float distToTarget = toTarget.magnitude;
+
+        if (rb != null && rb.bodyType != RigidbodyType2D.Static)
+            fixedVelocity = Vector2.zero;
 
         if (toTarget.sqrMagnitude > 0.0001f)
         {
             float angle = Mathf.Atan2(toTarget.y, toTarget.x) * Mathf.Rad2Deg - 90f;
-            float step = rotateSpeed * Time.deltaTime;
-            if (rb != null) rb.rotation = Mathf.MoveTowardsAngle(rb.rotation, angle, step);
+            fixedRotation = angle;
+            fixedHasRotation = true;
         }
 
         if (distToTarget <= convertedDetectionRange &&

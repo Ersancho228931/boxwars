@@ -239,101 +239,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dayGrassSprite: {fileID: 21300000, guid: aabb4e8566d144db39565cb59606852d, type: 3}
   nightGrassSprite: {fileID: 21300000, guid: 6dfc9e20903957843a69bf7bba564309, type: 3}
---- !u!1 &124724579
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 124724581}
-  - component: {fileID: 124724580}
-  m_Layer: 0
-  m_Name: Spawner (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &124724580
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 124724579}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6c12c3d21667a04b9158e49f94a31e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxEnemiesDay: 4
-  maxEnemiesNight: 10
-  maxDeadBodies: 10000
-  minSpawnTime: 2
-  maxSpawnTime: 7
-  spawnEntries:
-  - typeName: ogn
-    prefab: {fileID: 7057109017575632913, guid: db795f5b8b9b913458631fcfb94793fb, type: 3}
-    spawnEveryDay: 0
-    spawnDayMin: 1
-    spawnDayMax: 4
-    spawnCountDay: 1
-    spawnCountNight: 1
-    spawnIntervalMin: 5
-    spawnIntervalMax: 7
-  - typeName: zub
-    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
-    spawnEveryDay: 1
-    spawnDayMin: 1
-    spawnDayMax: 5
-    spawnCountDay: 1
-    spawnCountNight: 1
-    spawnIntervalMin: 5
-    spawnIntervalMax: 7
-  - typeName: bmb
-    prefab: {fileID: 7057109017575632913, guid: 26663e3377ed35a47aca9a979cbaa67a, type: 3}
-    spawnEveryDay: 0
-    spawnDayMin: 2
-    spawnDayMax: 4
-    spawnCountDay: 1
-    spawnCountNight: 2
-    spawnIntervalMin: 5
-    spawnIntervalMax: 7
-  - typeName: BOSS
-    prefab: {fileID: 7057109017575632913, guid: 984ecac7182054e4a85af53a987c7388, type: 3}
-    spawnEveryDay: 0
-    spawnDayMin: 0
-    spawnDayMax: 0
-    spawnCountDay: 0
-    spawnCountNight: 0
-    spawnIntervalMin: 3
-    spawnIntervalMax: 5
-  - typeName: bombe
-    prefab: {fileID: 7057109017575632913, guid: 26663e3377ed35a47aca9a979cbaa67a, type: 3}
-    spawnEveryDay: 0
-    spawnDayMin: 5
-    spawnDayMax: 5
-    spawnCountDay: 1
-    spawnCountNight: 5
-    spawnIntervalMin: 3
-    spawnIntervalMax: 5
---- !u!4 &124724581
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 124724579}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.29, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &150566168
 GameObject:
   m_ObjectHideFlags: 0
@@ -805,92 +710,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &737792392
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 737792394}
-  - component: {fileID: 737792393}
-  m_Layer: 0
-  m_Name: Spawner (2)
-  m_TagString: Untagged
-  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &737792393
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 737792392}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6c12c3d21667a04b9158e49f94a31e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxEnemiesDay: 4
-  maxEnemiesNight: 10
-  maxDeadBodies: 10000
-  minSpawnTime: 2
-  maxSpawnTime: 7
-  spawnEntries:
-  - typeName: ogn
-    prefab: {fileID: 7057109017575632913, guid: db795f5b8b9b913458631fcfb94793fb, type: 3}
-    spawnEveryDay: 0
-    spawnDayMin: 1
-    spawnDayMax: 4
-    spawnCountDay: 1
-    spawnCountNight: 1
-    spawnIntervalMin: 4
-    spawnIntervalMax: 7
-  - typeName: zub
-    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
-    spawnEveryDay: 1
-    spawnDayMin: 1
-    spawnDayMax: 4
-    spawnCountDay: 1
-    spawnCountNight: 1
-    spawnIntervalMin: 5
-    spawnIntervalMax: 7
-  - typeName: bmb
-    prefab: {fileID: 7057109017575632913, guid: 26663e3377ed35a47aca9a979cbaa67a, type: 3}
-    spawnEveryDay: 0
-    spawnDayMin: 2
-    spawnDayMax: 4
-    spawnCountDay: 1
-    spawnCountNight: 2
-    spawnIntervalMin: 5
-    spawnIntervalMax: 7
-  - typeName: BOSS
-    prefab: {fileID: 7057109017575632913, guid: 984ecac7182054e4a85af53a987c7388, type: 3}
-    spawnEveryDay: 0
-    spawnDayMin: 5
-    spawnDayMax: 5
-    spawnCountDay: 0
-    spawnCountNight: 1
-    spawnIntervalMin: 3
-    spawnIntervalMax: 5
---- !u!4 &737792394
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 737792392}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.04, y: 3.85, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &744175528
 GameObject:
   m_ObjectHideFlags: 0
@@ -1303,7 +1122,7 @@ MonoBehaviour:
   nightDuration: 30
   infoText: {fileID: 1979505028}
   nightOverlay: {fileID: 2012445717}
-  clearDeadBodiesOnNight5: 1
+  clearDeadBodiesOnNight5: 0
 --- !u!4 &1080298673
 Transform:
   m_ObjectHideFlags: 0
@@ -1627,7 +1446,7 @@ Transform:
   m_GameObject: {fileID: 1691415309}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -9.44, y: -0.019999921, z: 0}
+  m_LocalPosition: {x: -10.02, y: -0.019999921, z: 0}
   m_LocalScale: {x: 1, y: 12.19295, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1724,9 +1543,9 @@ MonoBehaviour:
     spawnIntervalMax: 7
   - typeName: zub
     prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
-    spawnEveryDay: 1
-    spawnDayMin: 1
-    spawnDayMax: 5
+    spawnEveryDay: 0
+    spawnDayMin: 2
+    spawnDayMax: 4
     spawnCountDay: 1
     spawnCountNight: 1
     spawnIntervalMin: 5
@@ -1767,7 +1586,102 @@ Transform:
   m_GameObject: {fileID: 1779884562}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8, y: 0, z: 0}
+  m_LocalPosition: {x: -7.14, y: 1.06, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1973876914
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1973876916}
+  - component: {fileID: 1973876915}
+  m_Layer: 0
+  m_Name: Spawner (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1973876915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1973876914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6c12c3d21667a04b9158e49f94a31e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxEnemiesDay: 4
+  maxEnemiesNight: 10
+  maxDeadBodies: 10000
+  minSpawnTime: 2
+  maxSpawnTime: 7
+  spawnEntries:
+  - typeName: ogn
+    prefab: {fileID: 7057109017575632913, guid: db795f5b8b9b913458631fcfb94793fb, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 2
+    spawnDayMax: 4
+    spawnCountDay: 1
+    spawnCountNight: 1
+    spawnIntervalMin: 5
+    spawnIntervalMax: 7
+  - typeName: zub
+    prefab: {fileID: 7057109017575632913, guid: f28db80c8e6a1ca488d9de2be3124edc, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 1
+    spawnDayMax: 4
+    spawnCountDay: 1
+    spawnCountNight: 1
+    spawnIntervalMin: 5
+    spawnIntervalMax: 7
+  - typeName: bmb
+    prefab: {fileID: 7057109017575632913, guid: 26663e3377ed35a47aca9a979cbaa67a, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 2
+    spawnDayMax: 4
+    spawnCountDay: 1
+    spawnCountNight: 2
+    spawnIntervalMin: 5
+    spawnIntervalMax: 7
+  - typeName: BOSS
+    prefab: {fileID: 7057109017575632913, guid: 984ecac7182054e4a85af53a987c7388, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 0
+    spawnDayMax: 0
+    spawnCountDay: 0
+    spawnCountNight: 0
+    spawnIntervalMin: 3
+    spawnIntervalMax: 5
+  - typeName: bombe
+    prefab: {fileID: 7057109017575632913, guid: 26663e3377ed35a47aca9a979cbaa67a, type: 3}
+    spawnEveryDay: 0
+    spawnDayMin: 5
+    spawnDayMax: 5
+    spawnCountDay: 1
+    spawnCountNight: 5
+    spawnIntervalMin: 3
+    spawnIntervalMax: 5
+--- !u!4 &1973876916
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1973876914}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -6.84, y: -3.22, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2028,6 +1942,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 7460b039019884dc187944312e6a7755, type: 3}
     - target: {fileID: 3013150031486954484, guid: 688d43e834fb4e547a311bd6f265cad4, type: 3}
+      propertyPath: healthText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3013150031486954484, guid: 688d43e834fb4e547a311bd6f265cad4, type: 3}
       propertyPath: infoMessage
       value: 'WASD - walk
 
@@ -2039,11 +1957,15 @@ PrefabInstance:
     - target: {fileID: 3013150031486954484, guid: 688d43e834fb4e547a311bd6f265cad4, type: 3}
       propertyPath: normalSprite
       value: 
-      objectReference: {fileID: 21300000, guid: 29b09bd6c55424a2e983ca20b99af219, type: 3}
+      objectReference: {fileID: 21300000, guid: 4ea464e24117cd54f9b2a6739e7202a6, type: 3}
     - target: {fileID: 3013150031486954484, guid: 688d43e834fb4e547a311bd6f265cad4, type: 3}
       propertyPath: damagedSprite
       value: 
       objectReference: {fileID: 21300000, guid: ef6467227c31e488da87240efd00c4d8, type: 3}
+    - target: {fileID: 3013150031486954484, guid: 688d43e834fb4e547a311bd6f265cad4, type: 3}
+      propertyPath: damagedSprite2
+      value: 
+      objectReference: {fileID: 21300000, guid: a3941e7e633c64a8fb68b3488e5c32ef, type: 3}
     - target: {fileID: 3013150031486954484, guid: 688d43e834fb4e547a311bd6f265cad4, type: 3}
       propertyPath: almostDeadSprite
       value: 
@@ -2206,8 +2128,7 @@ SceneRoots:
   - {fileID: 885822381}
   - {fileID: 1080298673}
   - {fileID: 1779884564}
-  - {fileID: 124724581}
-  - {fileID: 737792394}
+  - {fileID: 1973876916}
   - {fileID: 1614094894}
   - {fileID: 379432730}
   - {fileID: 1326910932}
